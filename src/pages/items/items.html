@@ -1,0 +1,68 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title *ngIf="!searchX">Items</ion-title>
+    <ion-buttons end *ngIf="!searchX">
+      <button ion-button icon-only (click)="searchClick()">
+        <ion-icon name="search"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-searchbar
+       *ngIf="searchX"
+       [(ngModel)]="someValue"
+       (ionInput)="searchThis($event)"
+       (ionCancel)="cancelSearch($event)"
+       (ionClear) = "cancelSearch($event)"
+       [showCancelButton]="true">
+    </ion-searchbar>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-item>
+      <ion-label>Show by</ion-label>
+      <ion-select interface="popover" [(ngModel)]="category">
+        <ion-option value="all">All Category</ion-option>
+        <ion-option value="man-shoes">Man Shoes</ion-option>
+      </ion-select>
+    </ion-item>
+  </ion-list>
+  <ion-list>
+    <ion-item class="have-border" (click)="updatePriceVariant(varID)">
+      <ion-avatar item-start>
+        <img src="http://gema-dev.com/myPOS/img/man-shoes.jpg">
+      </ion-avatar>
+      <ion-row no-padding>
+        <ion-col col-8>
+          <h2>Casual Man Shoes</h2>
+          <h3>Man Shoes | 42, 43</h3>
+        </ion-col>
+        <ion-col col-4>
+          <h2 padding-vertical>140.000</h2>
+        </ion-col>
+      </ion-row>
+    </ion-item>
+
+    <ion-item class="have-border" (click)="updatePriceVariant(varID)">
+      <ion-avatar item-start>
+        <img src="http://gema-dev.com/myPOS/img/man-shoes-2.jpg">
+      </ion-avatar>
+      <ion-row no-padding>
+        <ion-col col-8>
+          <h2>Leather Man Shoes</h2>
+          <h3>Man Shoes | 42, 43, 44</h3>
+        </ion-col>
+        <ion-col col-4>
+          <h2 padding-vertical>210.000</h2>
+        </ion-col>
+      </ion-row>
+    </ion-item>
+  </ion-list>
+
+  <ion-fab right bottom>
+    <button ion-fab color="primary" (click)="createItems()"><ion-icon name="add"></ion-icon></button>
+  </ion-fab>
+</ion-content>

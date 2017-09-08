@@ -1,5 +1,8 @@
 {
   "name": "myPOS",
-  "app_id": "",
-  "type": "ionic-angular"
+  "app_id": "eebd0c7d",
+  "type": "ionic-angular",
+  "integrations": {
+    "cordova": {}
+  }
 }

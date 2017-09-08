@@ -1,0 +1,41 @@
+<ion-header>
+  <ion-navbar>
+    <button menuToggle *ngIf="!selectedItem">
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Add Price & Variant</ion-title>
+    <ion-buttons end>
+      <button ion-button icon-end (click)="addPriceVariant()">
+        Add
+        <ion-icon name="add"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <ion-card>
+    <ion-card-header style="border-bottm: 1px solid #e2e2e2;">
+      Variant description
+    </ion-card-header>
+    <ion-item>
+      <ion-label stacked>Variant Name</ion-label>
+      <ion-input name="nama" type="text" placeholder="Variant Name"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label stacked>Price</ion-label>
+      <ion-input name="harga" type="number" placeholder="Price"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label stacked>SKU</ion-label>
+      <ion-input name="sku" type="text" placeholder="SKU"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label stacked>Barcode</ion-label>
+      <ion-input name="barcode" type="text" placeholder="Barcode"></ion-input>
+    </ion-item>
+    
+
+  </ion-card>
+
+</ion-content>
