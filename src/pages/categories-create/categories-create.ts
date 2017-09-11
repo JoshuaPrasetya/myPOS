@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { ToastController } from 'ionic-angular';
+import { RestapiServiceProvider } from '../../providers/restapi-service/restapi-service';
 
 import { CategoriesPage } from '../categories/categories';
 
@@ -9,21 +10,28 @@ import { CategoriesPage } from '../categories/categories';
   templateUrl: 'categories-create.html'
 })
 export class CategoriesCreatePage {
-  selectedItem: any;
-  icons: string[];
-  items: Array<{title: string, note: string, icon: string}>;
+ 
+  category = { nama: ''};
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public toastCtrl: ToastController) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public toastCtrl: ToastController, public restapiServiceProvider: RestapiServiceProvider) {
     
   }
 
   saveCategory(){
-    let confirm = this.toastCtrl.create({
-      message: 'Category was added successfully',
-      duration: 2000
+    console.log(JSON.stringify(this.category));
+    this.restapiServiceProvider.saveCategory(this.category).then((result) => {
+      console.log(result);
+      let confirm = this.toastCtrl.create({
+        message: 'Category was added successfully',
+        duration: 2000
+      });
+      confirm.present();
+      this.navCtrl.pop();
+      
+    }, (err) => {
+      console.log(err);
     });
-    confirm.present();
-    this.navCtrl.push(CategoriesPage);
+    
   }
 
   itemInCategory(catID){

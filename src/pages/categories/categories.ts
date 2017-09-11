@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
+import { RestapiServiceProvider } from '../../providers/restapi-service/restapi-service';
 
 import { CategoriesCreatePage } from '../categories-create/categories-create';
 
@@ -8,16 +9,31 @@ import { CategoriesCreatePage } from '../categories-create/categories-create';
   templateUrl: 'categories.html'
 })
 export class CategoriesPage {
-  selectedItem: any;
-  icons: string[];
-  items: Array<{title: string, note: string, icon: string}>;
+  posts: any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public restapiServiceProvider: RestapiServiceProvider) {
+    //this.getUsers();
     
+  }
+
+  ionViewWillEnter() {
+    console.log('hello, its me again');
+    this.getCategories();
+  }
+
+  itemTapped(id){
+    this.navCtrl.push(CategoriesCreatePage);
   }
 
   createCategories(){
     this.navCtrl.push(CategoriesCreatePage);
+  }
+
+  getCategories() {
+    this.restapiServiceProvider.getCategories()
+    .then(data => {
+      this.posts = data;
+    });
   }
 
 }

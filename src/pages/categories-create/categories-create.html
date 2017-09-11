@@ -1,5 +1,5 @@
 <ion-header>
-  <ion-navbar>
+  <ion-navbar color="primary">
     <button menuToggle *ngIf="!selectedItem">
       <ion-icon name="menu"></ion-icon>
     </button>
@@ -15,11 +15,12 @@
 
 <ion-content>
   <ion-card>
-    <ion-item>
-      <ion-label stacked>Category Name</ion-label>
-      <ion-input type="text" placeholder="Category Name"></ion-input>
-    </ion-item>
-
+    <form (ngSubmit)="saveCategory()">
+      <ion-item>
+        <ion-label stacked>Category Names</ion-label>
+        <ion-input type="text" [(ngModel)]="category.nama" name="nama" placeholder="Category Name"></ion-input>
+      </ion-item>
+    </form>
     <ion-item>
       <button ion-item (click)="itemInCategory(catID)">Items in category: x of n</button>
     </ion-item>
