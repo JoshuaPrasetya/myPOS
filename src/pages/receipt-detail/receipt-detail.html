@@ -1,0 +1,72 @@
+<ion-header>
+
+  <ion-navbar color="primary">
+    <button menuToggle *ngIf="!selectedItem">
+          <ion-icon name="menu"></ion-icon>
+        </button>
+
+    <ion-buttons end>
+      <button ion-button icon-end (click)="refund()">
+            Refund
+            <ion-icon name="undo"></ion-icon>
+          </button>
+    </ion-buttons>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  <ion-card>
+    <ion-list>
+      <ion-item class="border-top">
+        <ion-avatar item-start>
+          <img src="img/avatar-cher.png">
+        </ion-avatar>
+        <h2>Client 1</h2>
+        <p>Points: +0</p>
+      </ion-item>
+      <ion-item class="border-top">
+        <h2>Cashier: Owner</h2>
+      </ion-item>
+      <ion-item class="border-top">
+        <ion-list>
+          <ion-item padding-vertical>
+            <h2>Shoes 01</h2>
+            <h2>1 x 128.000</h2>
+            <div item-end>
+              <h2>128.000</h2>
+            </div>
+          </ion-item>
+          <ion-item padding-vertical>
+            <h2>Shoes 02</h2>
+            <h2>2 x 160.000</h2>
+            <div item-end>
+              <h2>320.000</h2>
+            </div>
+          </ion-item>
+        </ion-list>
+      </ion-item>
+      <ion-item class="border-top">
+        <ion-list>
+          <ion-item style="padding-left: 0px" padding-vertical>
+            <h2 item-start>Total</h2>
+            <h2 item-end>448.000</h2>
+          </ion-item>
+          <ion-item style="padding-left: 0px">
+            <h2 item-start>Cash</h2>
+            <h2 item-end>450.000</h2>
+          </ion-item>
+          <ion-item style="padding-left: 0px">
+            <h2 item-start>Change</h2>
+            <h2 item-end>2.000</h2>
+          </ion-item>
+        </ion-list>
+      </ion-item>
+      <ion-item class="border-top">
+        <h2 item-start>9/4/17 21:23</h2>
+        <h2 item-end>#1-1004</h2>
+      </ion-item>
+    </ion-list>
+  </ion-card>
+</ion-content>

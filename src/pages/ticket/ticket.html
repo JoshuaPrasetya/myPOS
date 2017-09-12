@@ -1,0 +1,70 @@
+<ion-header>
+
+  <ion-navbar color="primary">
+
+    <button ion-button clear class="button-ticket" *ngIf="!is_search">
+      Ticket
+      <ion-badge>0</ion-badge>
+    </button>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="deleteTicket()">
+        <ion-icon name="trash"></ion-icon>
+      </button>
+      <button ion-button icon-only (click)="toFeedback()">
+        <ion-icon name="notifications"></ion-icon>
+      </button>
+      <button ion-button icon-only (click)="addPerson()">
+        <ion-icon name="person-add"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content>
+
+  <ion-list padding-top>
+    <ion-item-sliding>
+      <ion-item>
+        <h2>Men Shoes 01 x 1</h2>
+        <p>128.000</p>
+        <div item-end>
+          <h2>128.000</h2>
+        </div>
+      </ion-item>
+      <ion-item-options side="left">
+        <button ion-button color="dark" padding-horizontal>
+          <ion-icon large name="arrow-round-back"></ion-icon>
+        </button>
+        <button ion-button color="primary" padding-horizontal>
+          <ion-icon large name="trash"></ion-icon>
+        </button>
+      </ion-item-options>
+    </ion-item-sliding>
+    <ion-item-sliding>
+      <ion-item>
+        <h2>Men Shoes 02 x 2</h2>
+        <p>160.000</p>
+        <div item-end>
+          <h2>320.000</h2>
+        </div>
+      </ion-item>
+      <ion-item-options side="left">
+        <button ion-button color="dark" padding-horizontal>
+          <ion-icon name="arrow-round-back"></ion-icon>
+        </button>
+        <button ion-button color="primary" padding-horizontal>
+          <ion-icon name="trash"></ion-icon>
+        </button>
+      </ion-item-options>
+    </ion-item-sliding>
+  </ion-list>
+
+  <div class="bottom-info" >
+    <button ion-button large full icon-end (click)="toPayment()">
+      Charge 0 
+      <ion-icon name="checkmark-circle"></ion-icon>
+    </button>
+  </div>
+</ion-content>

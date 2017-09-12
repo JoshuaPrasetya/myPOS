@@ -22,6 +22,11 @@ import { SettingsPage } from '../pages/settings/settings';
 import { FeedbackDetailPage } from '../pages/feedback-detail/feedback-detail';
 import { PrintersPage } from '../pages/printers/printers';
 import { PrinterCreatePage } from '../pages/printer-create/printer-create';
+import { ReceiptDetailPage} from '../pages/receipt-detail/receipt-detail';
+import { TicketPage } from '../pages/ticket/ticket';
+import { PaymentPage } from '../pages/payment/payment';
+import { SplitPaymentPage } from '../pages/split-payment/split-payment';
+import { EditTicketPage } from '../pages/edit-ticket/edit-ticket';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -56,6 +61,11 @@ import { ArrayFilterPipe } from '../pipes/array-filter/array-filter';
     FeedbackDetailPage,
     PrintersPage,
     PrinterCreatePage,
+    ReceiptDetailPage,
+    TicketPage,
+    EditTicketPage,
+    PaymentPage,
+    SplitPaymentPage,
   ],
   imports: [
     BrowserModule,
@@ -83,6 +93,11 @@ import { ArrayFilterPipe } from '../pipes/array-filter/array-filter';
     FeedbackDetailPage,
     PrintersPage,
     PrinterCreatePage,
+    ReceiptDetailPage,
+    TicketPage,
+    EditTicketPage,
+    PaymentPage,
+    SplitPaymentPage,
   ],
   providers: [
     StatusBar,

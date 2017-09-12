@@ -1,18 +1,34 @@
-<!--
-  Generated template for the ReceiptsPage page.
-
-  See http://ionicframework.com/docs/components/#navigation for more info on
-  Ionic pages and navigation.
--->
 <ion-header>
 
-  <ion-navbar>
-    <ion-title>receipts</ion-title>
+  <ion-navbar color="primary">
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title *ngIf="!is_search">Receipts</ion-title>
+    <ion-buttons end *ngIf="!is_search">
+      <button ion-button icon-only (click)="searchClick()">
+        <ion-icon name="search"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-searchbar *ngIf="is_search" [(ngModel)]="myInput" [showCancelButton]="true" (ionInput)="inputSearch($event)" (ionCancel)="cancelSearch()">
+    </ion-searchbar>
   </ion-navbar>
-
 </ion-header>
 
 
 <ion-content padding>
-
+  <ion-list>
+    <ion-item-group *ngFor="let recdate of recdates | filter:{stsData:true}">
+      <ion-item-divider padding-vertical>{{recdate.date}}</ion-item-divider>
+      <ion-item *ngFor="let receipt of receipts | filter:{date:recdate.date}" (click)=viewReceipt($id)>
+        <ion-icon name="list-box" item-start></ion-icon>
+        <h2>{{receipt.value}}</h2>
+        <p>{{receipt.type}}</p>
+        <div item-end>
+          <h2>{{receipt.time}}</h2>
+        </div>
+      </ion-item>
+    </ion-item-group>
+    <div padding text-center *ngIf="!data_valid">No Receipt</div>
+  </ion-list>
 </ion-content>
