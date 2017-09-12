@@ -9,6 +9,7 @@ import { CategoriesCreatePage } from '../categories-create/categories-create';
   templateUrl: 'categories.html'
 })
 export class CategoriesPage {
+  public is_search: boolean = false;
   posts: any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public restapiServiceProvider: RestapiServiceProvider) {
@@ -34,6 +35,18 @@ export class CategoriesPage {
     .then(data => {
       this.posts = data;
     });
+  }
+
+  searchClick(){
+    this.is_search = !this.is_search;
+  }
+
+  cancelSearch($event){
+    this.is_search = false;
+  }
+
+  inputSearch($event){
+    return false;
   }
 
 }

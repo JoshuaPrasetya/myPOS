@@ -1,0 +1,91 @@
+<!--
+  Generated template for the FeedbacksPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Feedbacks</ion-title>
+
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  <ion-segment [(ngModel)]="feedOption.type" name="type">
+    <ion-segment-button value="all">
+      All
+    </ion-segment-button>
+    <ion-segment-button value="positive">
+      Positive
+    </ion-segment-button>
+    <ion-segment-button value="neutral">
+      Neutral
+    </ion-segment-button>
+    <ion-segment-button value="negative">
+      Negative
+    </ion-segment-button>
+  </ion-segment>
+
+
+  <div [ngSwitch]="feedOption.type">
+    <ion-list *ngSwitchCase="'all'">
+      <ion-item-group *ngFor="let feeddate of feeddates">
+        <ion-item-divider>{{feeddate.date}}</ion-item-divider>
+        <ion-item *ngFor="let feedback of feedbacks | filter:{date:feeddate.date}">
+          <ion-avatar item-start>
+            <img src="img/avatar-cher.png">
+          </ion-avatar>
+          <h2>{{feedback.customer}}</h2>
+          <p>{{feedback.content}}</p>
+        </ion-item>
+      </ion-item-group>
+      <div padding text-center *ngIf="!stsPositive && !stsNeutral && !stsNegative">No feedback</div>
+    </ion-list>
+    <ion-list *ngSwitchCase="'positive'">
+      <ion-item-group *ngFor="let feeddate of feeddates | filter:{isPositive:true}">
+        <ion-item-divider>{{feeddate.date}}</ion-item-divider>
+        <ion-item *ngFor="let feedback of feedbacks | filter:{date:feeddate.date, type:'positive'}">
+          <ion-avatar item-start>
+            <img src="img/avatar-cher.png">
+          </ion-avatar>
+          <h2>{{feedback.customer}}</h2>
+          <p>{{feedback.content}}</p>
+        </ion-item>
+      </ion-item-group>
+      <div padding text-center *ngIf="!stsPositive">No feedback</div>
+    </ion-list>
+    <ion-list *ngSwitchCase="'neutral'">
+      <ion-item-group *ngFor="let feeddate of feeddates | filter:{isNeutral:true}">
+        <ion-item-divider>{{feeddate.date}}</ion-item-divider>
+        <ion-item *ngFor="let feedback of feedbacks | filter:{date:feeddate.date, type:'neutral'}">
+          <ion-avatar item-start>
+            <img src="img/avatar-cher.png">
+          </ion-avatar>
+          <h2>{{feedback.customer}}</h2>
+          <p>{{feedback.content}}</p>
+        </ion-item>
+      </ion-item-group>
+      <div padding text-center *ngIf="!stsNeutral">No feedback</div>
+    </ion-list>
+    <ion-list *ngSwitchCase="'negative'">
+      <ion-item-group *ngFor="let feeddate of feeddates | filter:{isNegative:true}">
+        <ion-item-divider>{{feeddate.date}}</ion-item-divider>
+        <ion-item *ngFor="let feedback of feedbacks | filter:{date:feeddate.date, type:'negative'}">
+          <ion-avatar item-start>
+            <img src="img/avatar-cher.png">
+          </ion-avatar>
+          <h2>{{feedback.customer}}</h2>
+          <p>{{feedback.content}}</p>
+        </ion-item>
+      </ion-item-group>
+      <div padding text-center *ngIf="!stsNegative">No feedback</div>
+    </ion-list>
+  </div>
+</ion-content>

@@ -15,6 +15,10 @@ import { DiscountsPage } from '../pages/discounts/discounts';
 import { CategoriesCreatePage } from '../pages/categories-create/categories-create';
 import { ItemsCreatePage } from '../pages/items-create/items-create';
 import { PriceVariantPage } from '../pages/price-variant/price-variant';
+import { DiscountCreatePage } from '../pages/discount-create/discount-create';
+import { ReceiptsPage } from '../pages/receipts/receipts';
+import { FeedbacksPage } from '../pages/feedbacks/feedbacks';
+import { SettingsPage } from '../pages/settings/settings';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -25,6 +29,7 @@ import { FilePath } from '@ionic-native/file-path';
 import { FileTransfer } from '@ionic-native/file-transfer';
 import { ActionSheet } from '@ionic-native/action-sheet';
 import { RestapiServiceProvider } from '../providers/restapi-service/restapi-service';
+import { ArrayFilterPipe } from '../pipes/array-filter/array-filter';
 
 @NgModule({
   declarations: [
@@ -40,6 +45,11 @@ import { RestapiServiceProvider } from '../providers/restapi-service/restapi-ser
     CategoriesCreatePage,
     ItemsCreatePage,
     PriceVariantPage,
+    DiscountCreatePage,
+    ReceiptsPage,
+    FeedbacksPage,
+    SettingsPage,
+    ArrayFilterPipe
   ],
   imports: [
     BrowserModule,
@@ -60,6 +70,10 @@ import { RestapiServiceProvider } from '../providers/restapi-service/restapi-ser
     CategoriesCreatePage,
     ItemsCreatePage,
     PriceVariantPage,
+    DiscountCreatePage,
+    ReceiptsPage,
+    FeedbacksPage,
+    SettingsPage,
   ],
   providers: [
     StatusBar,

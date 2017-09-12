@@ -8,7 +8,7 @@ import { ItemsCreatePage } from '../items-create/items-create';
   templateUrl: 'items.html'
 })
 export class ItemsPage {
-  public searchX: boolean = false;
+  public is_search: boolean = false;
   selectedItem: any;
   icons: string[];
   items: Array<{title: string, note: string, icon: string}>;
@@ -22,11 +22,15 @@ export class ItemsPage {
   }
 
   searchClick(){
-    this.searchX = !this.searchX;
+    this.is_search = !this.is_search;
   }
 
   cancelSearch($event){
-    this.searchX = false;
+    this.is_search = false;
+  }
+
+  inputSearch($event){
+    return false;
   }
 
 }

@@ -3,21 +3,36 @@
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>Discounts</ion-title>
+    <ion-title *ngIf="!is_search">Discounts</ion-title>
+    <ion-buttons end *ngIf="!is_search">
+      <button ion-button icon-only (click)="searchClick()">
+        <ion-icon name="search"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-searchbar
+       *ngIf="is_search"
+       [(ngModel)]="myInput"
+       [showCancelButton]="true"
+       (ionInput)="inputSearch($event)"
+       (ionCancel)="cancelSearch()">
+    </ion-searchbar>
   </ion-navbar>
 </ion-header>
 
 <ion-content>
   <ion-list>
-    <button ion-item *ngFor="let item of items" (click)="itemTapped($event, item)">
-      <ion-icon [name]="item.icon" item-left></ion-icon>
-      {{item.title}}
-      <div class="item-note" item-right>
-        {{item.note}}
-      </div>
-    </button>
+    <ion-item padding-right (click)="itemTapped()">
+      <ion-icon name="pricetag" item-start></ion-icon>
+      Reseller
+      <div item-right>10%</div>
+    </ion-item>
+    <ion-item padding-right (click)="itemTapped()">
+      <ion-icon name="pricetag" item-start></ion-icon>
+      Birthday
+      <div item-right>5.000</div>
+    </ion-item>
   </ion-list>
-  <div *ngIf="selectedItem" padding>
-    You navigated here from <b>{{selectedItem.title}}</b>
-  </div>
+  <ion-fab right bottom>
+    <button ion-fab color="primary" (click)="createDiscount()"><ion-icon name="add"></ion-icon></button>
+  </ion-fab>
 </ion-content>

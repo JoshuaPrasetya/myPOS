@@ -3,7 +3,19 @@
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>Categories</ion-title>
+    <ion-title *ngIf="!is_search">Categories</ion-title>
+    <ion-buttons end *ngIf="!is_search">
+      <button ion-button icon-only (click)="searchClick()">
+        <ion-icon name="search"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-searchbar
+       *ngIf="is_search"
+       [(ngModel)]="myInput"
+       [showCancelButton]="true"
+       (ionInput)="inputSearch($event)"
+       (ionCancel)="cancelSearch()">
+    </ion-searchbar>
   </ion-navbar>
 </ion-header>
 

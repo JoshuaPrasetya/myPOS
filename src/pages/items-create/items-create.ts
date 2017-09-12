@@ -166,7 +166,7 @@ export class ItemsCreatePage {
       duration: 2000
     });
     confirm.present();
-    this.navCtrl.push(ItemsPage);
+    this.navCtrl.pop();
   }
 
   // change display when user choose color or image on Representation in POS

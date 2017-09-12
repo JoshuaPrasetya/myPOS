@@ -1,0 +1,48 @@
+<ion-header>
+
+  <ion-navbar color="primary">
+    <button menuToggle *ngIf="!selectedItem">
+          <ion-icon name="menu"></ion-icon>
+        </button>
+    <ion-title>Create discount</ion-title>
+    <ion-buttons end>
+      <button ion-button icon-end (click)="saveDiscount()">
+            Save
+            <ion-icon name="checkmark-circle"></ion-icon>
+          </button>
+    </ion-buttons>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  <ion-card>
+    <form (ngSubmit)="saveDiscount()">
+      <ion-item>
+        <ion-label stacked>Name</ion-label>
+        <ion-input type="text" [(ngModel)]="discount.nama" name="nama" placeholder="Name"></ion-input>
+      </ion-item>
+      <ion-item>
+        
+        <ion-segment [(ngModel)]="discount.type" name="type" color="primary">
+          <ion-segment-button value="percent" (ionSelect)="setActive('percent')">
+            Percent %
+          </ion-segment-button>
+          <ion-segment-button value="nominal" (ionSelect)="setActive('nominal')">
+            Nominal
+          </ion-segment-button>
+        </ion-segment>
+      </ion-item>
+      <ion-item>
+        <ion-label stacked>Value</ion-label>
+        <ion-input type="number" [(ngModel)]="discount.value" name="value" placeholder="Value"></ion-input>
+      </ion-item>
+      <div class="button-bar">
+
+      </div>
+    </form>
+
+  </ion-card>
+
+</ion-content>
