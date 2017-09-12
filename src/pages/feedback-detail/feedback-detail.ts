@@ -1,32 +1,30 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 
-import { PrintersPage } from '../printers/printers';
 
 /**
- * Generated class for the SettingsPage page.
+ * Generated class for the FeedbackDetailPage page.
  *
  * See http://ionicframework.com/docs/components/#navigation for more info
  * on Ionic pages and navigation.
  */
 
 @Component({
-  selector: 'page-settings',
-  templateUrl: 'settings.html',
+  selector: 'page-feedback-detail',
+  templateUrl: 'feedback-detail.html',
 })
-export class SettingsPage {
+export class FeedbackDetailPage {
+  public stsResponse = false;
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
   }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad SettingsPage');
+  sendResponse(){
+    this.stsResponse = !this.stsResponse;
   }
 
-  setPrinter(){
-    this.navCtrl.push(PrintersPage);
+  ionViewDidLoad() {
+    console.log('ionViewDidLoad FeedbackDetailPage');
   }
-    
-  
 
 }

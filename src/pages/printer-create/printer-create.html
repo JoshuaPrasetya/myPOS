@@ -1,0 +1,49 @@
+<ion-header>
+
+  <ion-navbar color="primary">
+    <button menuToggle *ngIf="!selectedItem">
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Create printer</ion-title>
+    <ion-buttons end>
+      <button ion-button icon-end (click)="savePrinter()">
+        Save
+        <ion-icon name="checkmark-circle"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  <ion-card>
+    <form (ngSubmit)="savePrinter()">
+      <ion-item>
+        <ion-label stacked>Printer name</ion-label>
+        <ion-input type="text" [(ngModel)]="printer.nama" name="nama" placeholder="Printer name"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label stacked>Printer model</ion-label>
+        <ion-select interface="action-sheet" [(ngModel)]="printer.printer" name="printer">
+          <ion-option value="">No printer</ion-option>
+          <ion-option value="1">Star TSP654IIBI (Bluetooth)</ion-option>
+          <ion-option value="2">Star TSP143IIILAN (Ethernet)</ion-option>
+          <ion-option value="3">Star mPOP (Bluetooth)</ion-option>
+          <ion-option value="4">Epson TM-T20II (Ethernet)</ion-option>
+          <ion-option value="5">Epson TM-T88V (Ethernet)</ion-option>
+          <ion-option value="6">Posiflex 6900 (Ethernet)</ion-option>
+        </ion-select>
+      </ion-item>
+      <ion-item>
+        <ion-label> Print receipts</ion-label>
+        <ion-toggle [(ngModel)]="printer.print" name="print"></ion-toggle>
+      </ion-item>
+
+    </form>
+
+  </ion-card>
+  <ion-card>
+    <button clear color="light" class="print-test-button" ion-button large>PRINT TEST</button>
+  </ion-card>
+</ion-content>

@@ -1,0 +1,55 @@
+<!--
+  Generated template for the FeedbackDetailPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar color="primary">
+    <button menuToggle *ngIf="!selectedItem">
+          <ion-icon name="menu"></ion-icon>
+        </button>
+    <ion-title>Response to feedback</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content>
+  <ion-scroll class="top-container">
+    <ion-list>
+      <ion-item no-lines>
+        <ion-avatar item-start>
+          <img src="img/avatar-cher.png">
+        </ion-avatar>
+        <h2>Client 1</h2>
+        <h3>client1@email.com</h3>
+        <div item-end text-center>
+          <h3>Rating:</h3>
+          <ion-icon name="happy"></ion-icon>Excelent
+        </div>
+      </ion-item>
+      <ion-item padding text-center style="border-top: 1px solid #e2e2e2; border-bottom: 1px solid #e2e2e2;">
+        <h2>Note: Lorem ipsum dolor sit amet</h2>
+      </ion-item>
+
+    </ion-list>
+  </ion-scroll>
+
+  <form class="bottom-form" (ngSubmit)="sendResponse()">
+    <ion-item *ngIf="!stsResponse">
+      <ion-label>Response</ion-label>
+      <ion-input type="text"></ion-input>
+    </ion-item>
+    <button ion-button type="submit" full large *ngIf="!stsResponse">SEND RESPONSE</button>
+    <button ion-button full large disabled clear *ngIf="stsResponse">RESPONSE SENT</button>
+  </form>
+  
+</ion-content>
+<!--<ion-footer>
+
+  <button ion-button full large *ngIf="!stsResponse" (click)="sendResponse()">SEND RESPONSE</button>
+  <button ion-button full large disabled clear *ngIf="stsResponse">RESPONSE SENT</button>
+</ion-footer>
+-->

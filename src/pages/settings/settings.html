@@ -7,12 +7,24 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>settings</ion-title>
+    <button ion-button menuToggle>
+          <ion-icon name="menu"></ion-icon>
+        </button>
+    <ion-title>Settings</ion-title>
   </ion-navbar>
 
 </ion-header>
 
 
 <ion-content padding>
-
+  <ion-list>
+    <button ion-item (click)="setPrinter()">
+        <ion-icon name="print" item-start></ion-icon>
+      <h2>Printers</h2>
+    </button>
+  </ion-list>
+  <div class="bottom-info" padding text-center>
+    <h2>owner@email.com</h2>
+    <button ion-button full color="light">EXIT</button>
+  </div>
 </ion-content>

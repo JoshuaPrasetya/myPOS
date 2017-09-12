@@ -31,9 +31,9 @@ export class MyApp {
       { title: 'Receipt', component: ReceiptsPage, icons: 'paper' },
       { title: 'Items', component: ItemsListPage, icons: 'list' },
       { title: 'Feedbacks', component: FeedbacksPage, icons: 'heart' },
-      { title: 'Back office', component: null, icons: 'laptop' },
+      { title: 'Back office', component: 'backoffice', icons: 'laptop' },
       { title: 'Settings', component: SettingsPage, icons: 'settings' },
-      { title: 'Support', component: null, icons: 'help-circle' },
+      { title: 'Support', component: 'support', icons: 'help-circle' },
     ];
 
   }
@@ -47,9 +47,22 @@ export class MyApp {
     });
   }
 
+  openBackOffice(){
+    window.open('http://www.twitter.com/nraboy', '_system', 'location=yes'); 
+    return false;
+  }
+
   openPage(page) {
+    if (page.component == 'backoffice'){
+      window.open('http://dashboard.backoffice.com/', '_system', 'location=yes');
+      return false;
+    } else if(page.component == 'suport'){
+      window.open('http://support.backoffice.com/', '_system', 'location=yes');
+      return false;
+    } else {
     // Reset the content nav to have just this page
     // we wouldn't want the back button to show in this scenario
     this.nav.setRoot(page.component);
+    }
   }
 }

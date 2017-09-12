@@ -38,7 +38,7 @@
     <ion-list *ngSwitchCase="'all'">
       <ion-item-group *ngFor="let feeddate of feeddates">
         <ion-item-divider>{{feeddate.date}}</ion-item-divider>
-        <ion-item *ngFor="let feedback of feedbacks | filter:{date:feeddate.date}">
+        <ion-item *ngFor="let feedback of feedbacks | filter:{date:feeddate.date}" (click)=viewFeedback($id)>
           <ion-avatar item-start>
             <img src="img/avatar-cher.png">
           </ion-avatar>
@@ -51,7 +51,7 @@
     <ion-list *ngSwitchCase="'positive'">
       <ion-item-group *ngFor="let feeddate of feeddates | filter:{isPositive:true}">
         <ion-item-divider>{{feeddate.date}}</ion-item-divider>
-        <ion-item *ngFor="let feedback of feedbacks | filter:{date:feeddate.date, type:'positive'}">
+        <ion-item *ngFor="let feedback of feedbacks | filter:{date:feeddate.date, type:'positive'}" (click)=viewFeedback($id)>
           <ion-avatar item-start>
             <img src="img/avatar-cher.png">
           </ion-avatar>
@@ -64,7 +64,7 @@
     <ion-list *ngSwitchCase="'neutral'">
       <ion-item-group *ngFor="let feeddate of feeddates | filter:{isNeutral:true}">
         <ion-item-divider>{{feeddate.date}}</ion-item-divider>
-        <ion-item *ngFor="let feedback of feedbacks | filter:{date:feeddate.date, type:'neutral'}">
+        <ion-item *ngFor="let feedback of feedbacks | filter:{date:feeddate.date, type:'neutral'}" (click)=viewFeedback($id)>
           <ion-avatar item-start>
             <img src="img/avatar-cher.png">
           </ion-avatar>

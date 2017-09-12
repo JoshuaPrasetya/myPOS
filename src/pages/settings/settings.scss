@@ -1,3 +1,12 @@
-page-settings {
+page-settings {}
 
+.bottom-info {
+  position: absolute;
+  bottom: 0px;
+  display: block;
+  width: calc(100% - 32px);
+  background-color: white;
+  button {
+    margin: 0px !important;
+  }
 }

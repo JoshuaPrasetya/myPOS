@@ -1,0 +1,30 @@
+<ion-header>
+
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Printers</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  <ion-card>
+    <ion-list>
+      <ion-item padding-vertical class="border-top" (click)="itemTapped()">        
+        <h2>Printer 1</h2>
+        <p>Star mPOP (Bluetooth)</p>
+      </ion-item>
+      <ion-item padding-vertical class="border-top" (click)="itemTapped()">        
+        <h2>Printer 2</h2>
+        <p>Star mPOP (Bluetooth)</p>
+      </ion-item>
+      
+    </ion-list>
+  </ion-card>
+  <ion-fab right bottom>
+    <button ion-fab color="primary" (click)="createPrinter()"><ion-icon name="add"></ion-icon></button>
+  </ion-fab>
+</ion-content>

@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 
 import { ArrayFilterPipe } from '../../pipes/array-filter/array-filter';
-
+import { FeedbackDetailPage } from '../feedback-detail/feedback-detail';
 
 @Component({
   selector: 'page-feedbacks',
@@ -10,8 +10,8 @@ import { ArrayFilterPipe } from '../../pipes/array-filter/array-filter';
 })
 export class FeedbacksPage {
 
-  feedOption = {type:''};
-  feedbacks: Array<{ type: string, customer: string, content: string, date: any, response: string, response_date: string }>;
+  feedOption = { type: '' };
+  feedbacks: Array<{ type: string, customer: string, note: string, content: string, date: any, response: string, response_date: string }>;
   feeddates: Array<{ date: any, countAll: any, isPositive: boolean, countPositive: any, isNeutral: boolean, isNegative: boolean, countNeutral: any, countNegative: any }>;
 
   stsPositive: boolean;
@@ -26,11 +26,16 @@ export class FeedbacksPage {
     console.log('ionViewDidLoad FeedbacksPage');
   }
 
+  viewFeedback($id){
+    this.navCtrl.push(FeedbackDetailPage);
+  }
+
   initialization() {
     this.feedbacks = [];
     this.feedbacks.push({
       type: 'positive',
       customer: 'Client 1',
+      note: '',
       content: 'Terimakasih pelayanan nya bagus',
       date: '2017-09-12',
       response: 'Sama sama gan.',
@@ -38,6 +43,7 @@ export class FeedbacksPage {
     }, {
         type: 'negative',
         customer: 'Client 2',
+        note: '',
         content: 'Waiting list nya terlalu lama',
         date: '2017-09-12',
         response: 'Mohon maaf untuk ketidak nyamanannya.',
@@ -45,6 +51,7 @@ export class FeedbacksPage {
       }, {
         type: 'positive',
         customer: 'Client 3',
+        note: '',
         content: 'Barangnya OK',
         date: '2017-09-14',
         response: 'Siap gan!',
