@@ -19,7 +19,7 @@ export class CategoriesCreatePage {
 
   saveCategory(){
     console.log(JSON.stringify(this.category));
-    this.restapiServiceProvider.saveCategory(this.category).then((result) => {
+    this.restapiServiceProvider.postData('categories', this.category).then((result) => {
       console.log(result);
       let confirm = this.toastCtrl.create({
         message: 'Category was added successfully',

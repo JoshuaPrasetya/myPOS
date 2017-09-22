@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams, ActionSheetController, LoadingController, Loading, ToastController, Platform } from 'ionic-angular';
+import { RestapiServiceProvider } from '../../providers/restapi-service/restapi-service';
 
 import { CategoriesCreatePage } from '../categories-create/categories-create';
 import { ItemsPage } from '../items/items';
@@ -24,8 +25,11 @@ export class ItemsCreatePage {
   icons: string[];
   items: Array<{ title: string, note: string, icon: string }>;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public toastCtrl: ToastController, private camera: Camera, private transfer: FileTransfer, private file: File, private filePath: FilePath, public actionSheetCtrl: ActionSheetController, public platform: Platform, public loadingCtrl: LoadingController) {
+  posts: any;
+  item = { name: '', category_id: 'no_category', pricevariant: [] };
 
+  constructor(public navCtrl: NavController, public navParams: NavParams, public restapiServiceProvider: RestapiServiceProvider, public toastCtrl: ToastController, private camera: Camera, private transfer: FileTransfer, private file: File, private filePath: FilePath, public actionSheetCtrl: ActionSheetController, public platform: Platform, public loadingCtrl: LoadingController) {
+    this.getCategories();
   }
 
   public presentActionSheet() {
@@ -120,28 +124,28 @@ export class ItemsCreatePage {
   public uploadImage() {
     // Destination URL
     var url = "http://gema-dev.com/myPOS/upload.php";
-   
+
     // File for Upload
     var targetPath = this.pathForImage(this.lastImage);
-   
+
     // File name only
     var filename = this.lastImage;
-   
+
     var options = {
       fileKey: "file",
       fileName: filename,
       chunkedMode: false,
       mimeType: "multipart/form-data",
-      params : {'fileName': filename}
+      params: { 'fileName': filename }
     };
-   
+
     const fileTransfer: FileTransferObject = this.transfer.create();
-   
+
     this.loading = this.loadingCtrl.create({
       content: 'Uploading...',
     });
     this.loading.present();
-   
+
     // Use the FileTransfer to upload the image
     fileTransfer.upload(targetPath, url, options).then(data => {
       this.loading.dismissAll()
@@ -161,12 +165,35 @@ export class ItemsCreatePage {
   }
 
   saveItems() {
-    let confirm = this.toastCtrl.create({
-      message: 'Item was added successfully',
-      duration: 2000
-    });
-    confirm.present();
-    this.navCtrl.pop();
+    
+    console.log(this.item);
+    if (this.item.name == '') {
+      this.showToast('Please input item name');
+    } else if (this.item.category_id == 'no_category') {
+      this.showToast('Please select category');
+    } else {
+      this.item.pricevariant.push({
+        name: '43',
+        price: '128000',
+        sku: '0001'
+      },{
+        name: '44',
+        price: '130000',
+        sku: '0002'
+      });
+      console.log(this.item);
+      
+      this.restapiServiceProvider.postData('items', this.item).then((result) => {
+        console.log(result);
+        this.showToast('Item was added successfully');
+        this.navCtrl.pop();
+
+      }, (err) => {
+        console.log(err);
+        this.showToast('Please provide Item Data');
+      });
+
+    }
   }
 
   // change display when user choose color or image on Representation in POS
@@ -180,6 +207,21 @@ export class ItemsCreatePage {
 
   updatePriceVariant(varID) {
     this.navCtrl.push(PriceVariantPage);
+  }
+
+  getCategories() {
+    this.restapiServiceProvider.getData('categories')
+      .then(data => {
+        this.posts = data;
+      });
+  }
+
+  showToast(message) {
+    let confirm = this.toastCtrl.create({
+      message: message,
+      duration: 2000
+    });
+    confirm.present();
   }
 
 

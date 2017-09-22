@@ -20,15 +20,14 @@
     </ion-card-header>
     <ion-item>
       <ion-label stacked>Item Name</ion-label>
-      <ion-input type="text" placeholder="Item Name"></ion-input>
+      <ion-input type="text" [(ngModel)]="item.name" name="name" required placeholder="Item Name"></ion-input>
     </ion-item>
     <ion-item padding-bottom>
       <ion-label stacked>Category</ion-label>
-      <ion-select interface="action-sheet" [(ngModel)]="gaming">
+      <ion-select interface="action-sheet" [(ngModel)]="item.category_id" name="category_id">
         <ion-option value="no_category" selected>No Category</ion-option>
         <ion-option value="create_new" (ionSelect)="createNewCategory()">Create New Category</ion-option>
-        <ion-option value="cat1">First Category</ion-option>
-        <ion-option value="cat2">Second Category</ion-option>
+        <ion-option *ngFor="let post of posts" [value]="post.categories_id">{{post.category}}</ion-option>
       </ion-select>
     </ion-item>
 

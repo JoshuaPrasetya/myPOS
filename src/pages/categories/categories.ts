@@ -31,7 +31,7 @@ export class CategoriesPage {
   }
 
   getCategories() {
-    this.restapiServiceProvider.getCategories()
+    this.restapiServiceProvider.getData('categories')
     .then(data => {
       this.posts = data;
     });
