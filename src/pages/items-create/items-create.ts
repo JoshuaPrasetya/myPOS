@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams, ActionSheetController, LoadingController, Loading, ToastController, Platform } from 'ionic-angular';
 import { RestapiServiceProvider } from '../../providers/restapi-service/restapi-service';
+import { Insomnia } from '@ionic-native/insomnia';
 
 import { CategoriesCreatePage } from '../categories-create/categories-create';
 import { ItemsPage } from '../items/items';
@@ -26,11 +27,25 @@ export class ItemsCreatePage {
   items: Array<{ title: string, note: string, icon: string }>;
 
   posts: any;
-  item = { name: '', category_id: 'no_category', pricevariant: [] };
+  item = { name: '', category_id: 'no_category', pricevariant: [{ id: '', name: '', price: '', sku: '', barcode: '', image: '', item_id: '' }] };
+  public retriveData;
+  isPriceVariants = false;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public restapiServiceProvider: RestapiServiceProvider, public toastCtrl: ToastController, private camera: Camera, private transfer: FileTransfer, private file: File, private filePath: FilePath, public actionSheetCtrl: ActionSheetController, public platform: Platform, public loadingCtrl: LoadingController) {
-    this.getCategories();
+  constructor(public navCtrl: NavController, public navParams: NavParams, public restapiServiceProvider: RestapiServiceProvider, public toastCtrl: ToastController, private camera: Camera, private transfer: FileTransfer, private file: File, private filePath: FilePath, public actionSheetCtrl: ActionSheetController, public platform: Platform, public loadingCtrl: LoadingController, private insomnia: Insomnia) {
+    if (this.retriveData = navParams.get('idItem')) {
+      console.log('idItem : ' + this.retriveData);
+      this.getItems(this.retriveData);
+    } else {
+      this.getCategories();
+    }
+    this.insomnia.keepAwake()
+      .then(
+      () => console.log('success'),
+      () => console.log('error')
+      );
   }
+
+
 
   public presentActionSheet() {
     let actionSheet = this.actionSheetCtrl.create({
@@ -161,28 +176,48 @@ export class ItemsCreatePage {
   }
 
   addPriceVariant() {
-    this.navCtrl.push(PriceVariantPage);
+    // if item name and or item category id not set yet, user are not allowed to add price and variant
+    if (this.item.name == '') {
+      this.showToast('Please provide item name.');
+      return false;
+    } else if (this.item.category_id == 'no_category') {
+      this.showToast('Please choose one category');
+      return false;
+    } else {
+      // when user try to add variant, save the items to local database first
+
+      this.navCtrl.push(PriceVariantPage);
+    }
   }
 
   saveItems() {
-    
+
     console.log(this.item);
     if (this.item.name == '') {
       this.showToast('Please input item name');
     } else if (this.item.category_id == 'no_category') {
       this.showToast('Please select category');
     } else {
+      //  add some dummy data
       this.item.pricevariant.push({
+        id: null,
         name: '43',
         price: '128000',
-        sku: '0001'
-      },{
-        name: '44',
-        price: '130000',
-        sku: '0002'
-      });
+        sku: '0001',
+        barcode: null,
+        image: null,
+        item_id: null,
+      }, {
+          id: null,
+          name: '44',
+          price: '130000',
+          sku: '0002',
+          barcode: null,
+          image: null,
+          item_id: null,
+        });
       console.log(this.item);
-      
+
       this.restapiServiceProvider.postData('items', this.item).then((result) => {
         console.log(result);
         this.showToast('Item was added successfully');
@@ -213,6 +248,20 @@ export class ItemsCreatePage {
     this.restapiServiceProvider.getData('categories')
       .then(data => {
         this.posts = data;
+      });
+  }
+
+  getItems(idItem) {
+    this.restapiServiceProvider.getData('items/' + idItem + '/edit')
+      .then(data => {
+        //this.posts = data;
+        this.item.name = data['items']['name'];
+        this.item.category_id = data['items']['category_id'];
+        this.item.pricevariant = data['items']['price_variants'];
+        this.posts = data['categories'];
+        this.isPriceVariants = data['items']['is_price_variants'];
+        console.log('Result Data');
+        console.log(this.item);
       });
   }
 

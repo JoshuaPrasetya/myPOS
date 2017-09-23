@@ -11,7 +11,7 @@ import { CategoriesPage } from '../categories/categories';
 })
 export class CategoriesCreatePage {
  
-  category = { nama: ''};
+  category = { name: ''};
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public toastCtrl: ToastController, public restapiServiceProvider: RestapiServiceProvider) {
     

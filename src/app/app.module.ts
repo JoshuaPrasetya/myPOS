@@ -36,8 +36,11 @@ import { File } from '@ionic-native/file';
 import { FilePath } from '@ionic-native/file-path';
 import { FileTransfer } from '@ionic-native/file-transfer';
 import { ActionSheet } from '@ionic-native/action-sheet';
+import { Insomnia } from '@ionic-native/insomnia';
+import { SQLite, SQLiteObject } from '@ionic-native/sqlite';
 import { RestapiServiceProvider } from '../providers/restapi-service/restapi-service';
 import { ArrayFilterPipe } from '../pipes/array-filter/array-filter';
+
 
 @NgModule({
   declarations: [
@@ -107,6 +110,8 @@ import { ArrayFilterPipe } from '../pipes/array-filter/array-filter';
     FilePath,
     FileTransfer,
     ActionSheet,
+    Insomnia,
+    SQLite,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     RestapiServiceProvider
   ]

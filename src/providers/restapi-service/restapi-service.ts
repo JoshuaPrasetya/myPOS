@@ -14,6 +14,7 @@ export class RestapiServiceProvider {
   data : any;
   //apiUrl = 'https://jsonplaceholder.typicode.com';
   apiUrl = 'http://localhost/myPOS-API/public/api/v1';
+  //apiUrl = 'http://192.168.43.161/myPOS-API/public/api/v1';
   //apiUrl = 'http://gema-dev.com/myPOS-API/public/api/v1';
   
   limit = 0;

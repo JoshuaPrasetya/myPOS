@@ -44,7 +44,7 @@
 
   <div [ngSwitch]="items.segment">
     <ion-list *ngSwitchCase="'all'">
-      <ion-item>
+      <button ion-item class="active">
         <ion-avatar item-start>
           <img src="http://gema-dev.com/myPOS/img/man-shoes.jpg">
         </ion-avatar>
@@ -53,8 +53,8 @@
         <div item-end>
           <h1>128.000</h1>
         </div>
-      </ion-item>
-      <ion-item>
+      </button>
+      <button ion-item>
         <ion-avatar item-start>
           <img src="http://gema-dev.com/myPOS/img/man-shoes-2.jpg">
         </ion-avatar>
@@ -63,8 +63,8 @@
         <div item-end>
           <h1>160.000</h1>
         </div>
-      </ion-item>
-      <ion-item>
+      </button>
+      <button ion-item>
         <ion-avatar item-start >
             <ion-icon name="pricetag" style="font-size: 46px;"></ion-icon>
         </ion-avatar>
@@ -72,7 +72,7 @@
         <div item-end>
           <h1>10 %</h1>
         </div>
-      </ion-item>
+      </button>
     </ion-list>
 
     <ion-list *ngSwitchCase="'favorites'">

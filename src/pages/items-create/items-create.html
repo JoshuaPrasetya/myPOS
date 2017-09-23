@@ -27,44 +27,31 @@
       <ion-select interface="action-sheet" [(ngModel)]="item.category_id" name="category_id">
         <ion-option value="no_category" selected>No Category</ion-option>
         <ion-option value="create_new" (ionSelect)="createNewCategory()">Create New Category</ion-option>
-        <ion-option *ngFor="let post of posts" [value]="post.categories_id">{{post.category}}</ion-option>
+        <ion-option *ngFor="let category of posts" [value]="category.id">{{category.name}}</ion-option>
       </ion-select>
     </ion-item>
 
 
-    <ion-list>
+    <ion-list *ngIf="isPriceVariants">
       <ion-list-header class="no-border">
         Price & Variants
       </ion-list-header>
-      <ion-item class="have-border" (click)="updatePriceVariant(varID)">
+      <ion-item *ngFor="let pv of item.pricevariant" class="have-border" (click)="updatePriceVariant(pv.id)">
         <ion-avatar item-start>
-          <img src="http://gema-dev.com/myPOS/img/man-shoes.jpg">
+          <img src="http://gema-dev.com/myPOS/img/{{pv.image}}">
         </ion-avatar>
         <ion-row no-padding>
           <ion-col col-8>
-            <h2>Size 42</h2>
-            <h3>SKU: 001</h3>
+            <h2>{{pv.name}}</h2>
+            <h3>SKU: {{pv.sku}}</h3>
           </ion-col>
           <ion-col col-4>
-            <h2 padding-vertical>140.000</h2>
+            <h2 padding-vertical>{{pv.price}}</h2>
           </ion-col>
         </ion-row>
       </ion-item>
 
-      <ion-item class="have-border" (click)="updatePriceVariant(varID)">
-        <ion-avatar item-start>
-          <img src="http://gema-dev.com/myPOS/img/man-shoes.jpg">
-        </ion-avatar>
-        <ion-row no-padding>
-          <ion-col col-8>
-            <h2>Size 43</h2>
-            <h3>SKU: 002</h3>
-          </ion-col>
-          <ion-col col-4>
-            <h2 padding-vertical>158.000</h2>
-          </ion-col>
-        </ion-row>
-      </ion-item>
+      
     </ion-list>
     <button class="have-border" padding-horizontal text-center ion-item (click)="addPriceVariant()">Add Price & Variants</button>
 

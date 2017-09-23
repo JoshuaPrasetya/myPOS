@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
+import { RestapiServiceProvider } from '../../providers/restapi-service/restapi-service';
 
 import { ItemsCreatePage } from '../items-create/items-create';
 
@@ -11,26 +12,49 @@ export class ItemsPage {
   public is_search: boolean = false;
   selectedItem: any;
   icons: string[];
-  items: Array<{title: string, note: string, icon: string}>;
+  items: any;
+  category: { id: '', name: '' };
+  categories: any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
-    
+  constructor(public navCtrl: NavController, public navParams: NavParams, public restapiServiceProvider: RestapiServiceProvider) {
+
   }
 
-  createItems(){
+  ionViewWillEnter() {
+
+    this.getAllItems();
+  }
+
+  getAllItems() {
+    this.restapiServiceProvider.getData('getAllItems')
+      .then(data => {
+        this.items = data['items'];
+        this.categories = data['categories'];
+      });
+  }
+
+  createItems() {
     this.navCtrl.push(ItemsCreatePage);
   }
 
-  searchClick(){
+  searchClick() {
     this.is_search = !this.is_search;
   }
 
-  cancelSearch($event){
+  cancelSearch($event) {
     this.is_search = false;
   }
 
-  inputSearch($event){
+  inputSearch($event) {
     return false;
+  }
+
+  tappedEvent(id) {
+    console.log(id);
+    this.navCtrl.push(ItemsCreatePage, {
+      idItem: id
+    });
+
   }
 
 }
