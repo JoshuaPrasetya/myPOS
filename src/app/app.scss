@@ -17,3 +17,7 @@
 .item-inner{
     margin-left: 10px !important;
 }
+
+.activeHighlight{
+    color: map-get($colors, primary);
+}

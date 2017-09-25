@@ -32,61 +32,50 @@
   <div>
     <ion-segment [(ngModel)]="items.segment">
       <ion-segment-button value="all">
-        <ion-icon name="list"></ion-icon>
-        All
+        <ion-icon name="list-box" style="font-size: 20px;"> All</ion-icon>
+      
       </ion-segment-button>
       <ion-segment-button value="favorites">
-        <ion-icon name="star-outline"></ion-icon>
-        Favorites
+        <ion-icon name="star" style="font-size: 20px;"> Favorites</ion-icon>
       </ion-segment-button>
     </ion-segment>
   </div>
 
-  <div [ngSwitch]="items.segment">
-    <ion-list *ngSwitchCase="'all'">
-      <button ion-item class="active">
-        <ion-avatar item-start>
-          <img src="http://gema-dev.com/myPOS/img/man-shoes.jpg">
-        </ion-avatar>
-        <h2>Men Shoes 01</h2>
-        <p>003</p>
-        <div item-end>
-          <h1>128.000</h1>
-        </div>
-      </button>
-      <button ion-item>
-        <ion-avatar item-start>
-          <img src="http://gema-dev.com/myPOS/img/man-shoes-2.jpg">
-        </ion-avatar>
-        <h2>Men Shoes 02</h2>
-        <p>003</p>
-        <div item-end>
-          <h1>160.000</h1>
-        </div>
-      </button>
-      <button ion-item>
-        <ion-avatar item-start >
-            <ion-icon name="pricetag" style="font-size: 46px;"></ion-icon>
-        </ion-avatar>
-        <h2>Reseller</h2>
-        <div item-end>
-          <h1>10 %</h1>
-        </div>
-      </button>
-    </ion-list>
 
-    <ion-list *ngSwitchCase="'favorites'">
-      <ion-item>
-        <ion-avatar item-start>
-          <img src="http://gema-dev.com/myPOS/img/man-shoes-2.jpg">
-        </ion-avatar>
-        <h2>Men Shoes 02</h2>
-        <p>003</p>
-        <div item-end>
-          <h1>160.000</h1>
+  <div [ngSwitch]="items.segment">
+    <div class="row" style="padding: 10px" *ngSwitchCase="'all'">
+      <div col-12 col-sm-6 col-md-3 *ngFor="let allItem of itemAlls">
+        <div nowrap class="item-sales">
+          <div text-center>
+            <img src="http://gema-dev.com/myPOS/img/{{ allItem.image }}">
+          </div>
+          <hr>
+          <b><h4> {{ allItem.title }} </h4></b>
+          <h3 class="price">Rp. {{ allItem.price }}
+            <div style="float: right">
+              <ion-icon name="ios-star-outline"></ion-icon>
+            </div>
+          </h3>
         </div>
-      </ion-item>
-    </ion-list>
+      </div>
+    </div>
+
+    <div class="row" style="padding: 10px" *ngSwitchCase="'favorites'">
+      <div col-12 col-sm-6 col-md-3 *ngFor="let favoritItem of itemFavorits">
+        <div class="item-sales">
+          <div text-center>
+            <img src="http://gema-dev.com/myPOS/img/{{ favoritItem.image }}">
+          </div>
+          <hr>
+          <b><h4> {{ favoritItem.title }} </h4></b>
+          <h3 class="price">Rp. {{ favoritItem.price }}
+            <div style="float: right">
+              <ion-icon name="ios-star"></ion-icon>
+            </div>
+          </h3>
+        </div>
+      </div>
+    </div>
   </div>
 
 </ion-content>
