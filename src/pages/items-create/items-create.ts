@@ -1,7 +1,9 @@
-import { Component } from '@angular/core';
-import { NavController, NavParams, ActionSheetController, LoadingController, Loading, ToastController, Platform } from 'ionic-angular';
+import { Component, ViewChild, } from '@angular/core';
+import { NavController, NavParams, ActionSheetController, LoadingController, Loading, ToastController, Platform, Navbar, AlertController } from 'ionic-angular';
 import { RestapiServiceProvider } from '../../providers/restapi-service/restapi-service';
+import { Vibration } from '@ionic-native/vibration';
 import { Insomnia } from '@ionic-native/insomnia';
+import { DatabaseProvider } from './../../providers/database/database';
 
 import { CategoriesCreatePage } from '../categories-create/categories-create';
 import { ItemsPage } from '../items/items';
@@ -19,33 +21,85 @@ declare var cordova: any;
   templateUrl: 'items-create.html'
 })
 export class ItemsCreatePage {
+  @ViewChild(Navbar) navBar: Navbar;
   lastImage: string = null;
   loading: Loading;
   public isColor: boolean = true; //Whatever you want to initialise it as
   selectedItem: any;
   icons: string[];
-  items: Array<{ title: string, note: string, icon: string }>;
 
   posts: any;
-  item = { name: '', category_id: 'no_category', pricevariant: [{ id: '', name: '', price: '', sku: '', barcode: '', image: '', item_id: '' }] };
+  item = { id: '', real_id: '', name: '', image: '', category_id: 'no_category', pricevariant: [{ id: '', name: '', price: '', sku: '', barcode: '', image: '', item_id: '' }] };
   public retriveData;
   isPriceVariants = false;
+  itemActive = [];
+  isItemActive = false;
+  pricevariants = [];
+  developer = {};
+  developers = [];
+  lastItemId = null;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public restapiServiceProvider: RestapiServiceProvider, public toastCtrl: ToastController, private camera: Camera, private transfer: FileTransfer, private file: File, private filePath: FilePath, public actionSheetCtrl: ActionSheetController, public platform: Platform, public loadingCtrl: LoadingController, private insomnia: Insomnia) {
-    if (this.retriveData = navParams.get('idItem')) {
+  constructor(private databaseprovider: DatabaseProvider, private alertCtrl: AlertController, private vibration: Vibration, public navCtrl: NavController, public navParams: NavParams, public restapiServiceProvider: RestapiServiceProvider, public toastCtrl: ToastController, private camera: Camera, private transfer: FileTransfer, private file: File, private filePath: FilePath, public actionSheetCtrl: ActionSheetController, public platform: Platform, public loadingCtrl: LoadingController, private insomnia: Insomnia) {
+    if (this.retriveData = navParams.get('idItem')) { //jika ubah data
       console.log('idItem : ' + this.retriveData);
       this.getItems(this.retriveData);
-    } else {
+    } else { //jika tambah data baru..
+      this.lastItemId = null; //reset last Item ID karena belum ada item id
       this.getCategories();
     }
-    this.insomnia.keepAwake()
-      .then(
-      () => console.log('success'),
-      () => console.log('error')
-      );
+
   }
 
+  loadDeveloperData() {
+    this.databaseprovider.getAllDevelopers().then(data => {
+      this.developers = data;
+    })
+  }
+  loadPriceVariants() {
+    this.databaseprovider.getAllPriceVariantsModify().then(data => {
+      this.pricevariants = data;
+    });
+  }
+  loadItems() {
+    this.databaseprovider.getAllItemsModify().then(data => {
+      this.item.id = data['id'];
+      this.item.real_id = data['id_real'];
+      this.item.name = data['name'];
+      this.item.image = data['image'];
+      this.item.category_id = data['category_id'];
+    });
+  }
 
+  ionViewDidLoad() {
+    this.navBar.backButtonClick = (e: UIEvent) => {
+      if (this.isItemActive == true) {
+        this.itemActive = [];
+        this.isItemActive = false;
+        return false;
+      } else {
+        console.log('Back Button Clicked');
+        this.navCtrl.pop();
+      }
+
+    }
+  }
+
+  ionViewWillEnter() {
+    this.item.category_id = 'no_category';
+    this.databaseprovider.getDatabaseState().subscribe(rdy => {
+      if (rdy) {
+        
+        this.loadPriceVariants();
+        this.databaseprovider.getLastItemId().then(data => {
+          this.lastItemId = data;
+          if (this.lastItemId){
+            this.getItems(null);
+          }
+        })
+      }
+    });
+
+  }
 
   public presentActionSheet() {
     let actionSheet = this.actionSheetCtrl.create({
@@ -172,7 +226,9 @@ export class ItemsCreatePage {
   }
 
   createNewCategory() {
-    this.navCtrl.push(CategoriesCreatePage);
+    this.navCtrl.push(CategoriesCreatePage, {
+      justCreate: true
+    });
   }
 
   addPriceVariant() {
@@ -184,13 +240,19 @@ export class ItemsCreatePage {
       this.showToast('Please choose one category');
       return false;
     } else {
-      // when user try to add variant, save the items to local database first
 
+      // when user try to add variant, save the items to local database first
+      if (this.lastItemId == null) { //jika item merupakan data baru, maka save item dulu
+        this.databaseprovider.addItemsModify(null, this.item.name, this.item.image, parseInt(this.item.category_id))
+          .then(() => {
+          });
+      }
+      //buka halaman price variant
       this.navCtrl.push(PriceVariantPage);
     }
   }
 
-  saveItems() {
+  saveItems(idItem = null) {
 
     console.log(this.item);
     if (this.item.name == '') {
@@ -217,17 +279,28 @@ export class ItemsCreatePage {
           item_id: null,
         });
       console.log(this.item);
+      if (idItem == null) {
+        this.restapiServiceProvider.postData('items', this.item).then((result) => {
+          console.log(result);
+          this.showToast('Item was added successfully');
+          this.navCtrl.pop();
 
-      this.restapiServiceProvider.postData('items', this.item).then((result) => {
-        console.log(result);
-        this.showToast('Item was added successfully');
-        this.navCtrl.pop();
+        }, (err) => {
+          console.log(err);
+          this.showToast('Please provide Item Data');
+        });
+      } else {
+        this.restapiServiceProvider.putData('items/' + idItem, this.item).then((result) => {
+          console.log(result);
+          this.showToast('Item was updated successfully');
+          this.truncateAll()
+          this.navCtrl.pop();
 
-      }, (err) => {
-        console.log(err);
-        this.showToast('Please provide Item Data');
-      });
-
+        }, (err) => {
+          console.log(err);
+          this.showToast('Please provide Item Data');
+        });
+      }
     }
   }
 
@@ -240,10 +313,6 @@ export class ItemsCreatePage {
     }
   }
 
-  updatePriceVariant(varID) {
-    this.navCtrl.push(PriceVariantPage);
-  }
-
   getCategories() {
     this.restapiServiceProvider.getData('categories')
       .then(data => {
@@ -251,18 +320,51 @@ export class ItemsCreatePage {
       });
   }
 
+  truncateAll() {
+    this.databaseprovider.truncatePriceVariantsModify();
+    this.databaseprovider.truncateItemsModify();
+    this.lastItemId = null;
+  }
+
   getItems(idItem) {
-    this.restapiServiceProvider.getData('items/' + idItem + '/edit')
-      .then(data => {
-        //this.posts = data;
-        this.item.name = data['items']['name'];
-        this.item.category_id = data['items']['category_id'];
-        this.item.pricevariant = data['items']['price_variants'];
-        this.posts = data['categories'];
-        this.isPriceVariants = data['items']['is_price_variants'];
-        console.log('Result Data');
-        console.log(this.item);
+    //this.databaseprovider.deleteAllPriceVariantsModify();
+    if (idItem == null) { // untuk mengakomodasi fungsi back button
+      this.databaseprovider.getAllItemsModify().then(data => {
+        this.item.id = data[0]['id'];
+        this.item.name = data[0]['name'];
+        this.item.image = data[0]['image'];
+        this.item.category_id = data[0]['category_id'];
+        this.loadPriceVariants();
       });
+    } else {
+      //this.truncateAll();
+      this.restapiServiceProvider.getData('items/' + idItem + '/edit')
+        .then(data => {
+          //this.posts = data;
+          this.item.id = data['items']['id'];
+          this.item.name = data['items']['name'];
+          this.item.image = data['items']['image'];
+          this.item.category_id = data['items']['category_id'];
+          this.item.pricevariant = data['items']['price_variants'];
+
+          // masukkan data item ke local storage
+          this.databaseprovider.addItemsModify(this.item.id, this.item.name, this.item.image, this.item.category_id);
+
+          // masukkan data price variant ke local storage
+          this.item.pricevariant.forEach(r => {
+            this.databaseprovider.addPriceVariantsModify(r.name, r.price, r.sku, r.barcode, r.image, r.item_id);
+          });
+          //this.developers = data['items']['price_variants'];
+          //this.addPriceVariant(data['items']['price_variants'])
+          this.posts = data['categories'];
+          this.isPriceVariants = data['items']['is_price_variants'];
+          this.loadItems();
+          this.loadPriceVariants();
+          this.databaseprovider.getLastItemId().then(data => {
+            this.lastItemId = data;
+          })
+        });
+    }
   }
 
   showToast(message) {
@@ -273,6 +375,91 @@ export class ItemsCreatePage {
     confirm.present();
   }
 
+  itemTapped(id) {
+    if (this.isItemActive == true) {
+      if (this.itemActive.indexOf(id) > -1) {
+        this.itemActive.splice(this.itemActive.indexOf(id), 1);
+        if (this.itemActive.length < 1) {
+          this.isItemActive = false;
+        }
+      } else {
+        if (this.itemActive.length < 1) {
+          this.isItemActive = true;
+        }
+        this.itemActive.push(id);
+      }
+      this.vibration.vibrate(30);
+    } else {
+      this.navCtrl.push(PriceVariantPage, {
+        idPriceVariant: id
+      });
+    }
+  }
+
+  itemPressed(id) {
+    console.log("item Pressed");
+    if (this.itemActive.indexOf(id) > -1) {//jika item ada pada list maka nonaktifkan item
+      this.itemActive.splice(this.itemActive.indexOf(id), 1);
+      if (this.itemActive.length < 1) { //jika ini item terakhir yg dinonaktifkan maka status aktif = false
+        this.isItemActive = false;
+      }
+    } else { //jika tidak ada yang terpilih, maka push ke item terpilih
+      if (this.itemActive.length < 1) {
+        this.isItemActive = true;
+      }
+      this.itemActive.push(id);
+    }
+    this.vibration.vibrate(30);
+
+  }
+
+  checkActive(id) {
+    if (this.itemActive.indexOf(id) > - 1) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  deletePriceVariants() {
+    let alert = this.alertCtrl.create({
+      title: 'Are you sure you want to delete selected price & variants?',
+      message: 'Selected price & variants will be deleted!',
+      buttons: [
+        {
+          text: 'No',
+          role: 'cancel',
+          handler: () => {
+            console.log('Cancel clicked');
+
+          }
+        },
+        {
+          text: 'Yes',
+          handler: () => {
+            console.log(this.itemActive);
+
+            this.databaseprovider.deletePriceVariantsModify(this.itemActive.join(',')).then(() => {
+              let confirm = this.toastCtrl.create({
+                message: 'Items was deleted successfully',
+                duration: 2000
+              });
+              confirm.present();
+              this.getItems(null);
+              this.itemActive = [];
+              this.isItemActive = false;
+            }, (err) => {
+              console.log(err);
+            });
+          }
+        }
+      ]
+    });
+    alert.present();
+  }
 
 
 }
+
+
+

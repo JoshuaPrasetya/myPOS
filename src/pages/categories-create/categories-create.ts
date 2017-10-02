@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
-import { ToastController } from 'ionic-angular';
+import { NavController, NavParams, LoadingController, ToastController } from 'ionic-angular';
 import { RestapiServiceProvider } from '../../providers/restapi-service/restapi-service';
+import { DatabaseProvider } from './../../providers/database/database';
 
 import { CategoriesPage } from '../categories/categories';
 
@@ -10,35 +10,78 @@ import { CategoriesPage } from '../categories/categories';
   templateUrl: 'categories-create.html'
 })
 export class CategoriesCreatePage {
- 
-  category = { name: ''};
+  public retriveData;
+  category = { id: null, name: null };
+  details = { count_items: 0, total_items: 0 };
+  justCreate = false;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public toastCtrl: ToastController, public restapiServiceProvider: RestapiServiceProvider) {
-    
+  constructor(private databaseprovider: DatabaseProvider, public loadingCtrl: LoadingController, public navCtrl: NavController, public navParams: NavParams, public toastCtrl: ToastController, public restapiServiceProvider: RestapiServiceProvider) {
+    if (this.retriveData = navParams.get('idCategory')) {
+      console.log('idItem : ' + this.retriveData);
+      this.getCategories(this.retriveData);
+    } else {
+      this.getCategories();
+    }
+    this.justCreate = navParams.get('justCreate');
   }
 
-  saveCategory(){
-    console.log(JSON.stringify(this.category));
-    this.restapiServiceProvider.postData('categories', this.category).then((result) => {
-      console.log(result);
-      let confirm = this.toastCtrl.create({
-        message: 'Category was added successfully',
-        duration: 2000
+  getCategories(id = null) {
+    var str = '/x';
+    if (id !== null) {
+      console.log('edit category:' + id);
+      str = '/' + id;
+    }
+    this.restapiServiceProvider.getData('categories' + str)
+      .then(data => {
+        console.log(data);
+        this.category.id = data['id'];
+        this.category.name = data['name'];
+        this.details.count_items = data['count_items'];
+        this.details.total_items = data['total_items'];
       });
-      confirm.present();
-      this.navCtrl.pop();
-      
-    }, (err) => {
-      console.log(err);
-    });
-    
   }
 
-  itemInCategory(catID){
+  saveCategory(idCategory = null) {
+    if (idCategory == null) {
+      console.log(JSON.stringify(this.category));
+      this.restapiServiceProvider.postData('categories', this.category).then((result) => {
+        if(this.justCreate == true){ // jika proses tambah data = true, maka update item category id = result
+          this.databaseprovider.updateCategoryItemsModify(result['id']);
+        }
+        
+        let confirm = this.toastCtrl.create({
+          message: 'Category was added successfully',
+          duration: 2000
+        });
+        confirm.present();
+        
+        this.navCtrl.pop();
+
+      }, (err) => {
+        console.log(err);
+      });
+    } else {
+      this.restapiServiceProvider.putData('categories/'+idCategory, this.category).then((result) => {
+        console.log(result);
+        let confirm = this.toastCtrl.create({
+          message: 'Category was updated successfully',
+          duration: 2000
+        });
+        confirm.present();
+        this.navCtrl.pop();
+
+      }, (err) => {
+        console.log(err);
+      });
+    }
+
+  }
+
+  itemInCategory(catID) {
     // shows all item in this category
   }
 
-  createNewItem(catID){
+  createNewItem(catID) {
     // create new item in this category
   }
 

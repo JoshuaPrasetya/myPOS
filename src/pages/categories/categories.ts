@@ -1,6 +1,8 @@
-import { Component } from '@angular/core';
-import { NavController, ToastController, NavParams, AlertController } from 'ionic-angular';
+import { Component, ViewChild } from '@angular/core';
+import { NavController, ToastController, NavParams, AlertController, Navbar, LoadingController } from 'ionic-angular';
+import { Vibration } from '@ionic-native/vibration';
 import { RestapiServiceProvider } from '../../providers/restapi-service/restapi-service';
+
 
 import { CategoriesCreatePage } from '../categories-create/categories-create';
 
@@ -9,20 +11,34 @@ import { CategoriesCreatePage } from '../categories-create/categories-create';
   templateUrl: 'categories.html'
 })
 export class CategoriesPage {
+  @ViewChild(Navbar) navBar: Navbar;
   public is_search: boolean = false;
-  posts: any;
+  categories: any;
   itemActive = [];
   isItemActive = false;
 
 
-  constructor(private alertCtrl: AlertController, public navCtrl: NavController, public navParams: NavParams, public restapiServiceProvider: RestapiServiceProvider, public toastCtrl: ToastController) {
+  constructor(public loadingCtrl: LoadingController, private vibration: Vibration, private alertCtrl: AlertController, public navCtrl: NavController, public navParams: NavParams, public restapiServiceProvider: RestapiServiceProvider, public toastCtrl: ToastController) {
     //this.getUsers();
-
   }
 
   ionViewWillEnter() {
     console.log('hello, its me again');
     this.getCategories();
+  }
+
+  ionViewDidLoad() {
+    this.navBar.backButtonClick = (e: UIEvent) => {
+      if (this.isItemActive == true) {
+        this.itemActive = [];
+        this.isItemActive = false;
+        return false;
+      } else {
+        console.log('Back Button Clicked');
+        this.navCtrl.pop();
+      }
+
+    }
   }
 
   itemTapped(id) {
@@ -38,20 +54,37 @@ export class CategoriesPage {
         }
         this.itemActive.push(id);
       }
+      this.vibration.vibrate(30);
     } else {
-      this.navCtrl.push(CategoriesCreatePage);
+      this.navCtrl.push(CategoriesCreatePage, {
+        idCategory: id
+      });
     }
   }
 
   createCategories() {
+    this.isItemActive = false;
+    this.itemActive = [];
     this.navCtrl.push(CategoriesCreatePage);
   }
 
   getCategories() {
+    let loader = this.loadingCtrl.create({
+      content: 'Please wait..',
+      //duration: 10000
+    });
+    loader.present();
+
     this.restapiServiceProvider.getData('categories')
       .then(data => {
-        this.posts = data;
+        console.log(data);
+        this.categories = data;
       });
+
+    setTimeout(() => {
+      loader.dismiss();
+    }, 50);
+
   }
 
   searchClick() {
@@ -67,17 +100,19 @@ export class CategoriesPage {
   }
 
   itemPressed(id) {
-    if (this.itemActive.indexOf(id) > -1) {
+
+    if (this.itemActive.indexOf(id) > -1) {//jika item ada pada list maka nonaktifkan item
       this.itemActive.splice(this.itemActive.indexOf(id), 1);
-      if (this.itemActive.length < 1) {
+      if (this.itemActive.length < 1) { //jika ini item terakhir yg dinonaktifkan maka status aktif = false
         this.isItemActive = false;
       }
-    } else {
+    } else { //jika tidak ada yang terpilih, maka push ke item terpilih
       if (this.itemActive.length < 1) {
         this.isItemActive = true;
       }
       this.itemActive.push(id);
     }
+    this.vibration.vibrate(30);
   }
 
   checkActive(id) {
@@ -123,8 +158,6 @@ export class CategoriesPage {
       ]
     });
     alert.present();
-
-
   }
-  
+
 }

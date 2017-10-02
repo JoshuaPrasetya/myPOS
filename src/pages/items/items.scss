@@ -1,3 +1,6 @@
 page-items {
 
 }
+.itemHighlight{
+    color: map-get($colors, primary);
+}

@@ -6,7 +6,7 @@
         </button>
     <ion-title>Create discount</ion-title>
     <ion-buttons end>
-      <button ion-button icon-end (click)="saveDiscount()">
+      <button ion-button icon-end (click)="saveDiscount(discount.id)">
             Save
             <ion-icon name="checkmark-circle"></ion-icon>
           </button>
@@ -21,7 +21,7 @@
     <form (ngSubmit)="saveDiscount()">
       <ion-item>
         <ion-label stacked>Name</ion-label>
-        <ion-input type="text" [(ngModel)]="discount.nama" name="nama" placeholder="Name"></ion-input>
+        <ion-input type="text" [(ngModel)]="discount.name" name="name" placeholder="Name"></ion-input>
       </ion-item>
       <ion-item>
         

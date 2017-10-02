@@ -8,6 +8,10 @@
       <button ion-button icon-only (click)="searchClick()">
         <ion-icon name="search"></ion-icon>
       </button>
+      <button ion-button *ngIf="isItemActive" icon-end (click)="deleteItems()">
+        Delete
+        <ion-icon name="checkmark-circle"></ion-icon>
+      </button>
     </ion-buttons>
     <ion-searchbar *ngIf="is_search" [(ngModel)]="myInput" [showCancelButton]="true" (ionInput)="inputSearch($event)" (ionCancel)="cancelSearch()">
     </ion-searchbar>
@@ -25,7 +29,7 @@
     </ion-item>
   </ion-list>
   <ion-list>
-    <ion-item *ngFor="let item of items; let i=index" class="have-border" (click)="tappedEvent(item.id)">
+    <ion-item *ngFor="let item of items; let i=index" class="have-border"  [class.itemHighlight]="checkActive(item.id)" (press)="itemPressed(item.id)" (tap)="itemTapped(item.id)">
       <ion-avatar item-start>
         <img src="http://gema-dev.com/myPOS/img/man-shoes.jpg">
       </ion-avatar>

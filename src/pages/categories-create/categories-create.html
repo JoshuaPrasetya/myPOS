@@ -5,7 +5,7 @@
     </button>
     <ion-title>Create Category</ion-title>
     <ion-buttons end>
-      <button ion-button icon-end (click)="saveCategory()">
+      <button ion-button icon-end (click)="saveCategory(category.id)">
         Save
         <ion-icon name="checkmark-circle"></ion-icon>
       </button>
@@ -21,70 +21,13 @@
         <ion-input type="text" [(ngModel)]="category.name" name="name" placeholder="Category Name"></ion-input>
       </ion-item>
     </form>
-    <ion-item>
-      <button ion-item (click)="itemInCategory(catID)">Items in category: x of n</button>
+    <ion-item *ngIf="!justCreate">
+      <button ion-item (click)="itemInCategory(catID)">Items in category: {{details.count_items}} of {{details.total_items}}</button>
     </ion-item>
 
-    <ion-item>
-      <button ion-item (click)="createNewItem(catID)">Create New Item</button>
+    <ion-item *ngIf="!justCreate">
+      <button ion-item (click)="createNewItem(catID)">+Create New Item</button>
     </ion-item>
   </ion-card>
 
-  <ion-card>
-    <ion-card-header>
-      Category Color<br>
-      <span style="font-size: 12px;">This color will automatically apply to all the items under the categories for which no custom color is set.</span>
-      <hr>
-    </ion-card-header>
-    <ion-card-content>
-      <ion-list radio-group [(ngModel)]="relationship">
-        <ion-row>
-          <ion-col col-3>
-            <ion-item style="background-color: #E2E2E2;">
-              <ion-radio value="default" checked></ion-radio>
-            </ion-item>
-          </ion-col>
-          <ion-col col-3>
-            <ion-item style="background-color: #F44336;">
-              <ion-radio value="red"></ion-radio>
-            </ion-item>
-          </ion-col>
-          <ion-col col-3>
-            <ion-item style="background-color: #E91E63;">
-              <ion-radio value="magenta"></ion-radio>
-            </ion-item>
-          </ion-col>
-          <ion-col col-3>
-            <ion-item style="background-color: #FF9800;">
-              <ion-radio value="orange"></ion-radio>
-            </ion-item>
-          </ion-col>
-
-        </ion-row>
-        <ion-row>
-          <ion-col col-3>
-            <ion-item style="background-color: #CDDC39;">
-              <ion-radio value="lime" checked></ion-radio>
-            </ion-item>
-          </ion-col>
-          <ion-col col-3>
-            <ion-item style="background-color: #4CAF50;">
-              <ion-radio value="green"></ion-radio>
-            </ion-item>
-          </ion-col>
-          <ion-col col-3>
-            <ion-item style="background-color: #448AFF;">
-              <ion-radio value="blue"></ion-radio>
-            </ion-item>
-          </ion-col>
-          <ion-col col-3>
-            <ion-item style="background-color: #9C27B0;">
-              <ion-radio value="purple"></ion-radio>
-            </ion-item>
-          </ion-col>
-
-        </ion-row>
-      </ion-list>
-    </ion-card-content>
-  </ion-card>
 </ion-content>

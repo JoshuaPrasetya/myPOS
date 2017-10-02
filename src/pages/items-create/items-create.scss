@@ -17,3 +17,6 @@ page-itmes-create {
     border-width: 0px !important;
     margin-bottom: 0px;
 }
+.itemHighlight{
+    color: map-get($colors, primary);
+}

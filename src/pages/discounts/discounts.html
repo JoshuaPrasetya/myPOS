@@ -8,6 +8,10 @@
       <button ion-button icon-only (click)="searchClick()">
         <ion-icon name="search"></ion-icon>
       </button>
+      <button ion-button *ngIf="isItemActive" icon-end (click)="deleteDiscounts()">
+        Delete
+        <ion-icon name="checkmark-circle"></ion-icon>
+      </button>
     </ion-buttons>
     <ion-searchbar
        *ngIf="is_search"
@@ -21,15 +25,10 @@
 
 <ion-content>
   <ion-list>
-    <ion-item padding-right (click)="itemTapped()">
+    <ion-item padding-right *ngFor="let dis of discounts" (tap)="itemTapped(dis.id)" [class.itemHighlight]="checkActive(dis.id)" (press)="itemPressed(dis.id)">
       <ion-icon name="pricetag" item-start></ion-icon>
-      Reseller
-      <div item-right>10%</div>
-    </ion-item>
-    <ion-item padding-right (click)="itemTapped()">
-      <ion-icon name="pricetag" item-start></ion-icon>
-      Birthday
-      <div item-right>5.000</div>
+      {{dis.name}}
+      <div item-right>{{dis.value | number}}<span *ngIf="dis.type == 'percent'">%</span></div>
     </ion-item>
   </ion-list>
   <ion-fab right bottom>

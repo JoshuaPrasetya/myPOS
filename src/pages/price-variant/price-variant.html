@@ -15,26 +15,28 @@
 
 <ion-content>
   <ion-card>
+    ID Item = {{lastItemId}}
     <ion-card-header style="border-bottm: 1px solid #e2e2e2;">
       Variant description
     </ion-card-header>
     <ion-item>
       <ion-label stacked>Variant name</ion-label>
-      <ion-input name="nama" type="text" placeholder="Variant Name"></ion-input>
+      <ion-input [(ngModel)]="pricevariant.name" name="nama" type="text" placeholder="Variant Name"></ion-input>
     </ion-item>
     <ion-item>
       <ion-label stacked>Price</ion-label>
-      <ion-input name="harga" type="number" placeholder="Price"></ion-input>
+      <ion-input [(ngModel)]="pricevariant.price" name="price" type="number" placeholder="Price"></ion-input>
     </ion-item>
     <ion-item>
       <ion-label stacked>SKU</ion-label>
-      <ion-input name="sku" type="text" placeholder="SKU"></ion-input>
+      <ion-input [(ngModel)]="pricevariant.sku" name="sku" type="text" placeholder="SKU"></ion-input>
     </ion-item>
     <ion-item>
       <ion-label stacked>Barcode</ion-label>
-      <ion-input name="barcode" type="text" placeholder="Barcode"></ion-input>
+      <ion-input [(ngModel)]="pricevariant.barcode" name="barcode" type="text" placeholder="Barcode"></ion-input>
     </ion-item>
-    
+    <ion-input [(ngModel)]="pricevariant.image" name="image" type="hidden" value="noImage"></ion-input> 
+    <ion-input [(ngModel)]="pricevariant.item_id" name="item_id" type="hidden" value="1"></ion-input> 
 
   </ion-card>
 

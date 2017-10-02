@@ -5,8 +5,12 @@
     </button>
     <ion-title>Create Item</ion-title>
     <ion-buttons end>
-      <button ion-button icon-end (click)="saveItems()">
+      <button ion-button icon-end *ngIf="!isItemActive" (click)="saveItems(item.id)">
         Save
+        <ion-icon name="checkmark-circle"></ion-icon>
+      </button>
+      <button ion-button *ngIf="isItemActive" icon-end (click)="deletePriceVariants()">
+        Delete
         <ion-icon name="checkmark-circle"></ion-icon>
       </button>
     </ion-buttons>
@@ -24,18 +28,20 @@
     </ion-item>
     <ion-item padding-bottom>
       <ion-label stacked>Category</ion-label>
-      <ion-select interface="action-sheet" [(ngModel)]="item.category_id" name="category_id">
+
+      <ion-select interface="popover" [(ngModel)]="item.category_id" name="category_id">
         <ion-option value="no_category" selected>No Category</ion-option>
         <ion-option value="create_new" (ionSelect)="createNewCategory()">Create New Category</ion-option>
         <ion-option *ngFor="let category of posts" [value]="category.id">{{category.name}}</ion-option>
       </ion-select>
-    </ion-item>
 
+    </ion-item>
     <ion-list *ngIf="isPriceVariants">
       <ion-list-header class="no-border">
         Price & Variants
       </ion-list-header>
-      <ion-item *ngFor="let pv of item.pricevariant" class="have-border" (click)="updatePriceVariant(pv.id)">
+      <ion-item *ngFor="let pv of pricevariants" class="have-border" (tap)="itemTapped(pv.id)" [class.itemHighlight]="checkActive(pv.id)"
+        (press)="itemPressed(pv.id)">
         <ion-avatar item-start>
           <img src="http://gema-dev.com/myPOS/img/{{pv.image}}">
         </ion-avatar>
@@ -43,18 +49,25 @@
           <ion-col col-8>
             <h2>{{pv.name}}</h2>
             <h3>SKU: {{pv.sku}}</h3>
+            <h3>ID: {{pv.id}}</h3>
           </ion-col>
           <ion-col col-4>
             <h2 padding-vertical>{{pv.price}}</h2>
           </ion-col>
         </ion-row>
       </ion-item>
-
       
+
+
     </ion-list>
+    Last Item ID : {{lastItemId}}
+    ID Category : {{item.category_id}}
+
     <button class="have-border" padding-horizontal text-center ion-item (click)="addPriceVariant()">Add Price & Variants</button>
 
   </ion-card>
+
+
 
   <ion-card>
     <ion-card-header>

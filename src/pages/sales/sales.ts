@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { NavController, Platform } from 'ionic-angular';
+import { DatabaseProvider } from './../../providers/database/database';
 
 import { TicketPage } from '../ticket/ticket';
 import { PaymentPage } from '../payment/payment';
@@ -17,11 +18,33 @@ export class SalesPage {
   itemFavorits: Array<{title: string, price: number, image:string}>;
 
   activeItem: any;
+  developer = {};
+  developers = [];
+  pricevar = [];
 
-  constructor(public navCtrl: NavController) {
+  constructor( private databaseprovider: DatabaseProvider, private platform: Platform, public navCtrl: NavController) {
     this.items.segment = 'all';
 
     this.initializeItems();
+    this.databaseprovider.getDatabaseState().subscribe(rdy => {
+      if (rdy) {
+        this.loadDeveloperData();
+      }
+    })
+  }
+
+  loadDeveloperData() {
+    this.databaseprovider.getAllPriceVariantsModify().then(data => {
+      this.pricevar = data;
+    })
+  }
+ 
+  addDeveloper() {
+    this.databaseprovider.addDeveloper(this.developer['name'], this.developer['skill'], parseInt(this.developer['yearsOfExperience']))
+    .then(data => {
+      this.loadDeveloperData();
+    });
+    this.developer = {};
   }
 
   initializeItems() {

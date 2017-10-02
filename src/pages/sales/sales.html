@@ -24,6 +24,60 @@
 </ion-header>
 
 <ion-content padding>
+  <ion-card>
+    <ion-card-header style="border-bottm: 1px solid #e2e2e2;">
+      Hasilnya disini
+    </ion-card-header>
+    <ion-list>
+      <ion-item *ngFor="let p of pricevar">
+        <ion-avatar item-start>
+          <img src="http://gema-dev.com/myPOS/img/{{p.image}}">
+        </ion-avatar>
+        <ion-row no-padding>
+          <ion-col col-8>
+            <h2>{{p.name}}</h2>
+            <h3>SKU: {{p.sku}}</h3>
+          </ion-col>
+          <ion-col col-4>
+            <h2 padding-vertical>{{p.price}}</h2>
+          </ion-col>
+        </ion-row>
+      </ion-item>
+
+    </ion-list>
+  </ion-card>
+  <ion-item>
+    <ion-label stacked>What's your name?</ion-label>
+    <ion-input [(ngModel)]="developer.name" placeholder="Developer Name"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label stacked>What's your special skill?</ion-label>
+    <ion-input [(ngModel)]="developer.skill" placeholder="Special Skill"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label stacked>How long have you been working?</ion-label>
+    <ion-input [(ngModel)]="developer.yearsOfExperience" placeholder="Years of experience"></ion-input>
+  </ion-item>
+  <button ion-button full (click)="addDeveloper()">Add Developer Info</button>
+
+  <ion-list>
+    <ion-item *ngFor="let dev of developers">
+      <h2>{{ dev.name }}</h2>
+      <p>{{ dev.yearsOfExperience }} years of {{ dev.skill }} Experience!</p>
+    </ion-item>
+  </ion-list>
+
+  <!-- ________batas edit -->
+  <ion-list>
+    <ion-item *ngFor="let err of errors">
+      hmmm
+    </ion-item>
+  </ion-list>
+  <ion-list>
+    <ion-item *ngFor="let res of users">
+      yey
+    </ion-item>
+  </ion-list>
   <button ion-button large full icon-end (click)="toPayment()">
     Charge 0 
     <ion-icon name="checkmark-circle"></ion-icon>
@@ -33,7 +87,7 @@
     <ion-segment [(ngModel)]="items.segment">
       <ion-segment-button value="all">
         <ion-icon name="list-box" style="font-size: 20px;"> All</ion-icon>
-      
+
       </ion-segment-button>
       <ion-segment-button value="favorites">
         <ion-icon name="star" style="font-size: 20px;"> Favorites</ion-icon>

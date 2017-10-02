@@ -12,10 +12,10 @@ import 'rxjs/add/operator/map';
 export class RestapiServiceProvider {
 
   data : any;
-  //apiUrl = 'https://jsonplaceholder.typicode.com';
-  apiUrl = 'http://localhost/myPOS-API/public/api/v1';
-  //apiUrl = 'http://192.168.43.161/myPOS-API/public/api/v1';
-  //apiUrl = 'http://gema-dev.com/myPOS-API/public/api/v1';
+  //apiUrl = 'http://localhost/myPOS-API/public/api/v1';
+  //apiUrl = 'http://192.168.1.65/myPOS-API/public/api/v1';
+  //apiUrl = 'http://loyalti.kelelawar.com/public/api/v1';
+  apiUrl = 'http://gema-dev.com/myPOS-API/public/api/v1';
   
   limit = 0;
 
@@ -52,6 +52,17 @@ export class RestapiServiceProvider {
   postData(namespace, data) {
     return new Promise((resolve, reject) => {
       this.http.post(this.apiUrl+'/'+namespace, data)
+        .subscribe(res => {
+          resolve(res);
+        }, (err) => {
+          reject(err);
+        });
+    });
+  }
+
+  putData(namespace, data) {
+    return new Promise((resolve, reject) => {
+      this.http.put(this.apiUrl+'/'+namespace, data)
         .subscribe(res => {
           resolve(res);
         }, (err) => {
