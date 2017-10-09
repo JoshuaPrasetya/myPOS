@@ -1,3 +1,8 @@
 page-edit-ticket {
-
+    .blue-background{
+        background-color: map-get($colors, primary);
+    }
+    .text-black{
+        color: #000;
+    }
 }

@@ -16,37 +16,36 @@
     <ion-searchbar *ngIf="is_search" [(ngModel)]="myInput" [showCancelButton]="true" (ionInput)="inputSearch($event)" (ionCancel)="cancelSearch()">
     </ion-searchbar>
   </ion-navbar>
+  <ion-navbar>
+    <ion-item class="item-nopadding">
+        <ion-label>Show by</ion-label>
+        <ion-select interface="popover" [(ngModel)]="category">
+            <ion-option value="all" selected>All Category</ion-option>
+            <ion-option *ngFor="let cat of categories" [value]="cat.id">{{cat.name}}</ion-option>
+        </ion-select>
+    </ion-item>
+</ion-navbar>
 </ion-header>
 
 <ion-content>
-  <ion-list>
-    <ion-item>
-      <ion-label>Show by</ion-label>
-      <ion-select interface="popover" [(ngModel)]="category">
-        <ion-option value="all" selected>All Category</ion-option>
-        <ion-option *ngFor="let cat of categories" [value]="cat.id">{{cat.name}}</ion-option>
-      </ion-select>
-    </ion-item>
-  </ion-list>
-  <ion-list>
-    <ion-item *ngFor="let item of items; let i=index" class="have-border"  [class.itemHighlight]="checkActive(item.id)" (press)="itemPressed(item.id)" (tap)="itemTapped(item.id)">
-      <ion-avatar item-start>
-        <img src="http://gema-dev.com/myPOS/img/man-shoes.jpg">
-      </ion-avatar>
-      <div>
-        <h2>{{item.name}}</h2>
-        <h3>
-            <span *ngFor="let pv of item.price_variants">{{pv.name}} |</span>
-        </h3>
-      </div>
-      <div item-right>
-        <h2 padding-vertical>{{item.category_name}}</h2>
-      </div>
-      
-    </ion-item>
-  </ion-list>
 
-  <ion-fab right bottom>
-    <button ion-fab color="primary" (click)="createItems()"><ion-icon name="add"></ion-icon></button>
-  </ion-fab>
+    <ion-list>
+        <ion-item *ngFor="let item of items; let i=index"  [class.itemHighlight]="checkActive(item.id)" (press)="itemPressed(item.id)" (tap)="itemTapped(item.id)">
+            <ion-avatar item-start>
+                <img src="http://gema-dev.com/myPOS/img/man-shoes.jpg">
+            </ion-avatar>
+            <h2>{{item.name}}</h2>
+            <h3>
+                <span *ngFor="let pv of item.price_variants">{{pv.name}} |</span>
+            </h3>
+            <div item-right>
+                <h2 padding-vertical>{{item.category_name}}</h2>
+            </div>
+        </ion-item>
+    </ion-list>
+
+    <ion-fab right bottom>
+        <button ion-fab color="primary" (click)="createItems()"><ion-icon name="add"></ion-icon></button>
+    </ion-fab>
+
 </ion-content>

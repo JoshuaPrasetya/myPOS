@@ -110,8 +110,8 @@ export class ItemsPage {
   }
 
   truncateAll(){
-    this.databaseprovider.truncateItemsModify();
-  this.databaseprovider.truncatePriceVariantsModify();
+    this.databaseprovider.truncateItems();
+  this.databaseprovider.truncatePriceVariants();
   }
   
 

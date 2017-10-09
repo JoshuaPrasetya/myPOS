@@ -29,15 +29,16 @@ export class ItemsCreatePage {
   icons: string[];
 
   posts: any;
-  item = { id: '', real_id: '', name: '', image: '', category_id: 'no_category', pricevariant: [{ id: '', name: '', price: '', sku: '', barcode: '', image: '', item_id: '' }] };
+  item = { id: '', id_real: '', name: '', image: '', category_id: 'no_category', pricevariant: [{ id: '', id_real: '', name: '', price: '', sku: '', barcode: '', image: '', item_id: '' }] };
   public retriveData;
   isPriceVariants = false;
   itemActive = [];
   isItemActive = false;
   pricevariants = [];
-  developer = {};
-  developers = [];
   lastItemId = null;
+  totalPriceVar: any;
+  consoleLog = '';
+  lastPriceVariantId = null;
 
   constructor(private databaseprovider: DatabaseProvider, private alertCtrl: AlertController, private vibration: Vibration, public navCtrl: NavController, public navParams: NavParams, public restapiServiceProvider: RestapiServiceProvider, public toastCtrl: ToastController, private camera: Camera, private transfer: FileTransfer, private file: File, private filePath: FilePath, public actionSheetCtrl: ActionSheetController, public platform: Platform, public loadingCtrl: LoadingController, private insomnia: Insomnia) {
     if (this.retriveData = navParams.get('idItem')) { //jika ubah data
@@ -45,25 +46,20 @@ export class ItemsCreatePage {
       this.getItems(this.retriveData);
     } else { //jika tambah data baru..
       this.lastItemId = null; //reset last Item ID karena belum ada item id
-      this.getCategories();
+      //this.getCategories();
     }
-
+    this.consoleLog = this.consoleLog + ' constructor()';
   }
 
-  loadDeveloperData() {
-    this.databaseprovider.getAllDevelopers().then(data => {
-      this.developers = data;
-    })
-  }
   loadPriceVariants() {
-    this.databaseprovider.getAllPriceVariantsModify().then(data => {
+    this.databaseprovider.getAllPriceVariants().then(data => {
       this.pricevariants = data;
     });
   }
   loadItems() {
-    this.databaseprovider.getAllItemsModify().then(data => {
+    this.databaseprovider.getAllItems().then(data => {
       this.item.id = data['id'];
-      this.item.real_id = data['id_real'];
+      this.item.id_real = data['id_real'];
       this.item.name = data['name'];
       this.item.image = data['image'];
       this.item.category_id = data['category_id'];
@@ -80,25 +76,28 @@ export class ItemsCreatePage {
         console.log('Back Button Clicked');
         this.navCtrl.pop();
       }
-
     }
   }
 
-  ionViewWillEnter() {
+  reloadLast() {
+    this.getItems(null);
+  }
+
+  ionViewDidEnter() {
+    this.getCategories();
     this.item.category_id = 'no_category';
     this.databaseprovider.getDatabaseState().subscribe(rdy => {
       if (rdy) {
-        
-        this.loadPriceVariants();
+
+        //this.loadPriceVariants();
         this.databaseprovider.getLastItemId().then(data => {
           this.lastItemId = data;
-          if (this.lastItemId){
+          if (this.lastItemId) {
             this.getItems(null);
           }
         })
       }
     });
-
   }
 
   public presentActionSheet() {
@@ -226,9 +225,12 @@ export class ItemsCreatePage {
   }
 
   createNewCategory() {
-    this.navCtrl.push(CategoriesCreatePage, {
-      justCreate: true
-    });
+    this.databaseprovider.addItems(null, this.item.name, this.item.image, null).then(() => {
+      this.navCtrl.push(CategoriesCreatePage, {
+        justCreate: true
+      });
+    })
+
   }
 
   addPriceVariant() {
@@ -243,7 +245,7 @@ export class ItemsCreatePage {
 
       // when user try to add variant, save the items to local database first
       if (this.lastItemId == null) { //jika item merupakan data baru, maka save item dulu
-        this.databaseprovider.addItemsModify(null, this.item.name, this.item.image, parseInt(this.item.category_id))
+        this.databaseprovider.addItems(null, this.item.name, this.item.image, parseInt(this.item.category_id))
           .then(() => {
           });
       }
@@ -253,7 +255,6 @@ export class ItemsCreatePage {
   }
 
   saveItems(idItem = null) {
-
     console.log(this.item);
     if (this.item.name == '') {
       this.showToast('Please input item name');
@@ -261,6 +262,7 @@ export class ItemsCreatePage {
       this.showToast('Please select category');
     } else {
       //  add some dummy data
+      /*
       this.item.pricevariant.push({
         id: null,
         name: '43',
@@ -279,6 +281,8 @@ export class ItemsCreatePage {
           item_id: null,
         });
       console.log(this.item);
+      */
+      this.item.pricevariant = this.pricevariants;
       if (idItem == null) {
         this.restapiServiceProvider.postData('items', this.item).then((result) => {
           console.log(result);
@@ -287,7 +291,7 @@ export class ItemsCreatePage {
 
         }, (err) => {
           console.log(err);
-          this.showToast('Please provide Item Data');
+          this.showToast('Please provide Item Add Data');
         });
       } else {
         this.restapiServiceProvider.putData('items/' + idItem, this.item).then((result) => {
@@ -321,20 +325,31 @@ export class ItemsCreatePage {
   }
 
   truncateAll() {
-    this.databaseprovider.truncatePriceVariantsModify();
-    this.databaseprovider.truncateItemsModify();
+    this.databaseprovider.truncatePriceVariants();
+    this.databaseprovider.truncateItems();
     this.lastItemId = null;
   }
 
   getItems(idItem) {
-    //this.databaseprovider.deleteAllPriceVariantsModify();
+    //this.databaseprovider.deleteAllPriceVariants();
     if (idItem == null) { // untuk mengakomodasi fungsi back button
-      this.databaseprovider.getAllItemsModify().then(data => {
+      this.databaseprovider.getAllItems().then(data => {
         this.item.id = data[0]['id'];
+        this.item.id_real = data[0]['id_real'];
         this.item.name = data[0]['name'];
         this.item.image = data[0]['image'];
         this.item.category_id = data[0]['category_id'];
+        if (this.item.category_id == null) {
+          this.item.category_id = 'no_category';
+        }
         this.loadPriceVariants();
+        this.databaseprovider.getLastPriceVariantId().then(data => {
+          this.lastPriceVariantId = data;
+          if (this.lastPriceVariantId) {
+            this.isPriceVariants = true;
+          }
+        });
+        this.consoleLog = this.consoleLog + ' getItem(null)';
       });
     } else {
       //this.truncateAll();
@@ -342,19 +357,19 @@ export class ItemsCreatePage {
         .then(data => {
           //this.posts = data;
           this.item.id = data['items']['id'];
+          this.item.id_real = data['items']['id'];
           this.item.name = data['items']['name'];
           this.item.image = data['items']['image'];
           this.item.category_id = data['items']['category_id'];
           this.item.pricevariant = data['items']['price_variants'];
 
           // masukkan data item ke local storage
-          this.databaseprovider.addItemsModify(this.item.id, this.item.name, this.item.image, this.item.category_id);
+          this.databaseprovider.addItems(this.item.id, this.item.name, this.item.image, this.item.category_id);
 
           // masukkan data price variant ke local storage
           this.item.pricevariant.forEach(r => {
-            this.databaseprovider.addPriceVariantsModify(r.name, r.price, r.sku, r.barcode, r.image, r.item_id);
+            this.databaseprovider.addPriceVariants(r.id, r.name, r.price, r.sku, r.barcode, r.image, r.item_id);
           });
-          //this.developers = data['items']['price_variants'];
           //this.addPriceVariant(data['items']['price_variants'])
           this.posts = data['categories'];
           this.isPriceVariants = data['items']['is_price_variants'];
@@ -362,7 +377,7 @@ export class ItemsCreatePage {
           this.loadPriceVariants();
           this.databaseprovider.getLastItemId().then(data => {
             this.lastItemId = data;
-          })
+          });
         });
     }
   }
@@ -410,7 +425,6 @@ export class ItemsCreatePage {
       this.itemActive.push(id);
     }
     this.vibration.vibrate(30);
-
   }
 
   checkActive(id) {
@@ -437,11 +451,12 @@ export class ItemsCreatePage {
         {
           text: 'Yes',
           handler: () => {
-            console.log(this.itemActive);
+            this.consoleLog = this.itemActive.join(', ');
+            //this.consoleLog = this.itemActive.map(function(x) {return x +',';});
 
-            this.databaseprovider.deletePriceVariantsModify(this.itemActive.join(',')).then(() => {
+            this.databaseprovider.deletePriceVariants(this.itemActive.join(', ')).then(() => {
               let confirm = this.toastCtrl.create({
-                message: 'Items was deleted successfully',
+                message: 'Price Variants was deleted successfully',
                 duration: 2000
               });
               confirm.present();
@@ -457,8 +472,6 @@ export class ItemsCreatePage {
     });
     alert.present();
   }
-
-
 }
 
 

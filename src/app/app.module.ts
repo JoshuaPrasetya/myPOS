@@ -27,6 +27,7 @@ import { TicketPage } from '../pages/ticket/ticket';
 import { PaymentPage } from '../pages/payment/payment';
 import { SplitPaymentPage } from '../pages/split-payment/split-payment';
 import { EditTicketPage } from '../pages/edit-ticket/edit-ticket';
+import { PaymentDetailPage } from '../pages/payment-detail/payment-detail';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -77,6 +78,7 @@ import { SQLitePorter } from '@ionic-native/sqlite-porter';
     EditTicketPage,
     PaymentPage,
     SplitPaymentPage,
+    PaymentDetailPage
   ],
   imports: [
     BrowserModule,
@@ -110,6 +112,7 @@ import { SQLitePorter } from '@ionic-native/sqlite-porter';
     EditTicketPage,
     PaymentPage,
     SplitPaymentPage,
+    PaymentDetailPage
   ],
   providers: [
     StatusBar,

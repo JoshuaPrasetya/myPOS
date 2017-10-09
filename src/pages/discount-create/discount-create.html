@@ -17,32 +17,33 @@
 
 
 <ion-content padding>
-  <ion-card>
-    <form (ngSubmit)="saveDiscount()">
-      <ion-item>
-        <ion-label stacked>Name</ion-label>
-        <ion-input type="text" [(ngModel)]="discount.name" name="name" placeholder="Name"></ion-input>
-      </ion-item>
-      <ion-item>
-        
-        <ion-segment [(ngModel)]="discount.type" name="type" color="primary">
-          <ion-segment-button value="percent" (ionSelect)="setActive('percent')">
-            Percent %
-          </ion-segment-button>
-          <ion-segment-button value="nominal" (ionSelect)="setActive('nominal')">
-            Nominal
-          </ion-segment-button>
-        </ion-segment>
-      </ion-item>
-      <ion-item>
-        <ion-label stacked>Value</ion-label>
-        <ion-input type="number" [(ngModel)]="discount.value" name="value" placeholder="Value"></ion-input>
-      </ion-item>
-      <div class="button-bar">
 
-      </div>
-    </form>
+    <ion-card text-center>  
+        <ion-card-content>
+            <form (ngSubmit)="saveDiscount()">
+                <ion-item class="item-nopadding">
+                    <ion-label floating>Name</ion-label>
+                    <ion-input type="text" [(ngModel)]="discount.name" name="name" ></ion-input>
+                </ion-item>
+                <ion-item class="item-nopadding">      
+                    <ion-segment [(ngModel)]="discount.type" name="type" color="primary">
+                        <ion-segment-button value="percent" (ionSelect)="setActive('percent')">
+                            Percent %
+                        </ion-segment-button>
+                        <ion-segment-button value="nominal" (ionSelect)="setActive('nominal')">
+                            Nominal
+                        </ion-segment-button>
+                    </ion-segment>
+                </ion-item>
+                <ion-item class="item-nopadding">
+                    <ion-label floating>Value</ion-label>
+                    <ion-input type="number" [(ngModel)]="discount.value" name="value" ></ion-input>
+                </ion-item>
+                <div class="button-bar"></div>
+            </form>
+        </ion-card-content>
+    </ion-card>
 
-  </ion-card>
+
 
 </ion-content>

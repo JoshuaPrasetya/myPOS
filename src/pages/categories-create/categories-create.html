@@ -17,8 +17,8 @@
   <ion-card>
     <form (ngSubmit)="saveCategory()">
       <ion-item>
-        <ion-label stacked>Category Names</ion-label>
-        <ion-input type="text" [(ngModel)]="category.name" name="name" placeholder="Category Name"></ion-input>
+        <ion-label floating>Category Names</ion-label>
+        <ion-input type="text" [(ngModel)]="category.name" name="name" ></ion-input>
       </ion-item>
     </form>
     <ion-item *ngIf="!justCreate">

@@ -1,22 +1,36 @@
-page-itmes-create {
-
-}
-.label {
-    margin: 0;
- }
- 
-.item-inner {
-    padding-right: 0px!important;
-}
-
-.have-border{
-    border-top: 1px solid #e2e2e2 !important;
-}
-
-.no-border{
-    border-width: 0px !important;
-    margin-bottom: 0px;
-}
-.itemHighlight{
-    color: map-get($colors, primary);
+page-items-create {
+    .label {
+        margin: 0;
+    }
+    
+    .item-inner {
+        padding-right: 0px!important;
+        margin-bottom: 5px;
+    }
+    
+    .have-border{
+        border-top: 1px solid #e2e2e2 !important;
+    }
+    
+    /*ion-card {
+        background: #dc302a !important;
+    }*/
+    
+    .item-nopadding{
+        padding: 0px !important;
+    }
+    
+    .normal{
+        background: #E2E2E2;
+    }
+    .card-header-border {
+        border-bottom: 2px solid #e2e2e2 !important;
+        margin-bottom: 10px
+    }
+    
+    
+    .no-border{
+        border-width: 0px !important;
+        margin-bottom: 0px;
+    }
 }

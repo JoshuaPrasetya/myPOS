@@ -5,7 +5,7 @@
     </button>
     <ion-title>Create Item</ion-title>
     <ion-buttons end>
-      <button ion-button icon-end *ngIf="!isItemActive" (click)="saveItems(item.id)">
+      <button ion-button icon-end *ngIf="!isItemActive" (click)="saveItems(item.id_real)">
         Save
         <ion-icon name="checkmark-circle"></ion-icon>
       </button>
@@ -18,134 +18,130 @@
 </ion-header>
 
 <ion-content>
-  <ion-card>
-    <ion-card-header style="border-bottm: 1px solid #e2e2e2;">
-      Item description
-    </ion-card-header>
-    <ion-item>
-      <ion-label stacked>Item Name</ion-label>
-      <ion-input type="text" [(ngModel)]="item.name" name="name" required placeholder="Item Name"></ion-input>
-    </ion-item>
-    <ion-item padding-bottom>
-      <ion-label stacked>Category</ion-label>
 
-      <ion-select interface="popover" [(ngModel)]="item.category_id" name="category_id">
-        <ion-option value="no_category" selected>No Category</ion-option>
-        <ion-option value="create_new" (ionSelect)="createNewCategory()">Create New Category</ion-option>
-        <ion-option *ngFor="let category of posts" [value]="category.id">{{category.name}}</ion-option>
-      </ion-select>
-
-    </ion-item>
-    <ion-list *ngIf="isPriceVariants">
-      <ion-list-header class="no-border">
-        Price & Variants
-      </ion-list-header>
-      <ion-item *ngFor="let pv of pricevariants" class="have-border" (tap)="itemTapped(pv.id)" [class.itemHighlight]="checkActive(pv.id)"
-        (press)="itemPressed(pv.id)">
-        <ion-avatar item-start>
-          <img src="http://gema-dev.com/myPOS/img/{{pv.image}}">
-        </ion-avatar>
-        <ion-row no-padding>
-          <ion-col col-8>
-            <h2>{{pv.name}}</h2>
-            <h3>SKU: {{pv.sku}}</h3>
-            <h3>ID: {{pv.id}}</h3>
-          </ion-col>
-          <ion-col col-4>
-            <h2 padding-vertical>{{pv.price}}</h2>
-          </ion-col>
-        </ion-row>
-      </ion-item>
-      
-
-
-    </ion-list>
-    Last Item ID : {{lastItemId}}
-    ID Category : {{item.category_id}}
-
-    <button class="have-border" padding-horizontal text-center ion-item (click)="addPriceVariant()">Add Price & Variants</button>
-
-  </ion-card>
-
-
-
-  <ion-card>
-    <ion-card-header>
-      Representation on POS
-    </ion-card-header>
-    <ion-card-content>
-      <ion-list radio-group>
-        <ion-item>
-          <ion-label>Color</ion-label>
-          <ion-radio (ionSelect)="setType('color')" value="color" checked></ion-radio>
-        </ion-item>
-        <ion-item>
-          <ion-label>Image</ion-label>
-          <ion-radio (ionSelect)="setType('image')" value="image"></ion-radio>
-        </ion-item>
-      </ion-list>
-      <br>
-      <ion-list *ngIf="isColor" radio-group [(ngModel)]="relationship">
-        <ion-row>
-          <ion-col col-3>
-            <ion-item style="background-color: #E2E2E2;">
-              <ion-radio value="default" checked></ion-radio>
+    <ion-card text-center>    
+        <ion-card-header class="card-header-border">
+            Item Description
+        </ion-card-header>
+        <ion-card-content>
+            <ion-item class="item-nopadding">
+                <ion-label floating>Item Name</ion-label>
+                <ion-input type="text" [(ngModel)]="item.name" name="name" required ></ion-input>
             </ion-item>
-          </ion-col>
-          <ion-col col-3>
-            <ion-item style="background-color: #F44336;">
-              <ion-radio value="red"></ion-radio>
+            <ion-item class="item-nopadding">
+                <ion-label>Category</ion-label>
+                <ion-select interface="popover" [(ngModel)]="item.category_id" name="category_id">
+                    <ion-option value="no_category" selected>No Category</ion-option>
+                    <ion-option value="create_new" (ionSelect)="createNewCategory()">Create New Category</ion-option>
+                    <ion-option *ngFor="let category of posts" [value]="category.id">{{category.name}}</ion-option>
+                </ion-select>
             </ion-item>
-          </ion-col>
-          <ion-col col-3>
-            <ion-item style="background-color: #E91E63;">
-              <ion-radio value="magenta"></ion-radio>
-            </ion-item>
-          </ion-col>
-          <ion-col col-3>
-            <ion-item style="background-color: #FF9800;">
-              <ion-radio value="orange"></ion-radio>
-            </ion-item>
-          </ion-col>
+        </ion-card-content>
 
-        </ion-row>
-        <ion-row>
-          <ion-col col-3>
-            <ion-item style="background-color: #CDDC39;">
-              <ion-radio value="lime" checked></ion-radio>
+        <ion-list *ngIf="isPriceVariants">
+            <ion-list-header class="no-border">
+                Price & Variants
+            </ion-list-header>
+            <ion-item *ngFor="let pv of item.pricevariant" class="have-border" (click)="updatePriceVariant(pv.id)">
+                <ion-avatar item-start>
+                    <img src="http://gema-dev.com/myPOS/img/{{pv.image}}">
+                </ion-avatar>
+                <ion-row no-padding>
+                    <ion-col col-8>
+                        <h2>{{pv.name}}</h2>
+                        <h3>SKU: {{pv.sku}}</h3>
+                    </ion-col>
+                    <ion-col col-4>
+                        <h2 padding-vertical>{{pv.price}}</h2>
+                    </ion-col>
+                </ion-row>
             </ion-item>
-          </ion-col>
-          <ion-col col-3>
-            <ion-item style="background-color: #4CAF50;">
-              <ion-radio value="green"></ion-radio>
-            </ion-item>
-          </ion-col>
-          <ion-col col-3>
-            <ion-item style="background-color: #448AFF;">
-              <ion-radio value="blue"></ion-radio>
-            </ion-item>
-          </ion-col>
-          <ion-col col-3>
-            <ion-item style="background-color: #9C27B0;">
-              <ion-radio value="purple"></ion-radio>
-            </ion-item>
-          </ion-col>
 
-        </ion-row>
-      </ion-list>
 
-      <ion-item *ngIf="!isColor" text-center>
-        <img src="{{pathForImage(lastImage)}}" style="width: 100%" [hidden]="lastImage === null">
-        <h3 [hidden]="lastImage !== null">Please Select Image!</h3>
-        <ion-buttons>
-          <button ion-button icon-left (click)="presentActionSheet()">
-            <ion-icon name="camera"></ion-icon>Select Image
-          </button>
-          <button ion-button icon-left (click)="uploadImage()" [disabled]="lastImage === null">
-            <ion-icon name="cloud-upload"></ion-icon>Upload
-          </button>
-        </ion-buttons>
-      </ion-item>
-    </ion-card-content>
-  </ion-card>
+        </ion-list>
+        <button class="have-border normal" padding-horizontal text-center ion-item (click)="addPriceVariant()">Add Price & Variants</button>
+
+    </ion-card>
+
+
+
+    <ion-card text-center>
+        <ion-card-header class="card-header-border">
+            Representation On POS
+        </ion-card-header>
+        <ion-card-content>
+            <ion-list radio-group>
+                <ion-item>
+                    <ion-label>Color</ion-label>
+                    <ion-radio (ionSelect)="setType('color')" value="color" checked></ion-radio>
+                </ion-item>
+                <ion-item>
+                    <ion-label>Image</ion-label>
+                    <ion-radio (ionSelect)="setType('image')" value="image"></ion-radio>
+                </ion-item>
+            </ion-list>
+            <br>
+            <ion-list *ngIf="isColor" radio-group [(ngModel)]="relationship">
+                <ion-row>
+                    <ion-col col-3>
+                        <ion-item style="background-color: #E2E2E2;">
+                            <ion-radio value="default" checked></ion-radio>
+                        </ion-item>
+                    </ion-col>
+                    <ion-col col-3>
+                        <ion-item style="background-color: #F44336;">
+                            <ion-radio value="red"></ion-radio>
+                        </ion-item>
+                    </ion-col>
+                    <ion-col col-3>
+                        <ion-item style="background-color: #E91E63;">
+                            <ion-radio value="magenta"></ion-radio>
+                        </ion-item>
+                    </ion-col>
+                    <ion-col col-3>
+                        <ion-item style="background-color: #FF9800;">
+                            <ion-radio value="orange"></ion-radio>
+                        </ion-item>
+                    </ion-col>
+
+                </ion-row>
+                <ion-row>
+                    <ion-col col-3>
+                        <ion-item style="background-color: #CDDC39;">
+                            <ion-radio value="lime" checked></ion-radio>
+                        </ion-item>
+                    </ion-col>
+                    <ion-col col-3>
+                        <ion-item style="background-color: #4CAF50;">
+                            <ion-radio value="green"></ion-radio>
+                        </ion-item>
+                    </ion-col>
+                    <ion-col col-3>
+                        <ion-item style="background-color: #448AFF;">
+                            <ion-radio value="blue"></ion-radio>
+                        </ion-item>
+                    </ion-col>
+                    <ion-col col-3>
+                        <ion-item style="background-color: #9C27B0;">
+                            <ion-radio value="purple"></ion-radio>
+                        </ion-item>
+                    </ion-col>
+
+                </ion-row>
+            </ion-list>
+
+            <ion-item *ngIf="!isColor" text-center>
+                <img src="{{pathForImage(lastImage)}}" style="width: 100%" [hidden]="lastImage === null">
+                     <h3 [hidden]="lastImage !== null">Please Select Image!</h3>
+                <ion-buttons>
+                    <button ion-button icon-left (click)="presentActionSheet()">
+                            <ion-icon name="camera"></ion-icon>Select Image
+                    </button>
+                    <button ion-button icon-left (click)="uploadImage()" [disabled]="lastImage === null">
+                            <ion-icon name="cloud-upload"></ion-icon>Upload
+                    </button>
+                </ion-buttons>
+            </ion-item>
+        </ion-card-content>
+    </ion-card>
 </ion-content>

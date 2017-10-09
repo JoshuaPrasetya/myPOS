@@ -1,7 +1,7 @@
 <ion-header>
 
   <ion-navbar color="primary">
-    <ion-title>Payment 348.000</ion-title>
+    <ion-title>Payment {{totalPayment | number}}</ion-title>
     <ion-buttons end>
       <button ion-button (click)="toSplitPayment()">
         Split
@@ -14,6 +14,7 @@
 
 <ion-content padding>
   <form>
+    <!-->consoleLog = {{consoleLog}} -->
     <button ion-button large full (click)="doCharge()">
     Charge
     </button>
@@ -28,7 +29,7 @@
         <ion-icon name="card"></ion-icon>
         Card
       </ion-label>
-      <ion-input type="number" disabled="!isCash"></ion-input>
+      <ion-input [(ngModel)]="payment.cash" name="cash" type="number" [disabled]="!isCash"></ion-input>
     </ion-item>
     <button ion-button full *ngIf="isCash" (click)="changePayment()">Card</button>
   </form>

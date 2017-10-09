@@ -14,30 +14,35 @@
 </ion-header>
 
 <ion-content>
-  <ion-card>
-    ID Item = {{lastItemId}}
-    <ion-card-header style="border-bottm: 1px solid #e2e2e2;">
-      Variant description
-    </ion-card-header>
-    <ion-item>
-      <ion-label stacked>Variant name</ion-label>
-      <ion-input [(ngModel)]="pricevariant.name" name="nama" type="text" placeholder="Variant Name"></ion-input>
-    </ion-item>
-    <ion-item>
-      <ion-label stacked>Price</ion-label>
-      <ion-input [(ngModel)]="pricevariant.price" name="price" type="number" placeholder="Price"></ion-input>
-    </ion-item>
-    <ion-item>
-      <ion-label stacked>SKU</ion-label>
-      <ion-input [(ngModel)]="pricevariant.sku" name="sku" type="text" placeholder="SKU"></ion-input>
-    </ion-item>
-    <ion-item>
-      <ion-label stacked>Barcode</ion-label>
-      <ion-input [(ngModel)]="pricevariant.barcode" name="barcode" type="text" placeholder="Barcode"></ion-input>
-    </ion-item>
-    <ion-input [(ngModel)]="pricevariant.image" name="image" type="hidden" value="noImage"></ion-input> 
-    <ion-input [(ngModel)]="pricevariant.item_id" name="item_id" type="hidden" value="1"></ion-input> 
 
-  </ion-card>
+  <ion-card text-center>
+    <ion-card-header class="card-header-border">
+
+      Variant Description
+    </ion-card-header>
+    <ion-card-content>
+      <ion-item class="item-nopadding">
+        <ion-label floating>Variant Name</ion-label>
+        <ion-input [(ngModel)]="pricevariant.name" name="nama" type="text"></ion-input>
+
+      </ion-item>
+      <ion-item class="item-nopadding">
+        <ion-label floating>Price</ion-label>
+        <ion-input [(ngModel)]="pricevariant.price" name="price" type="number"></ion-input>
+      </ion-item>
+      <ion-item class="item-nopadding">
+        <ion-label floating>SKU</ion-label>
+        <ion-input [(ngModel)]="pricevariant.sku" name="sku" type="text"></ion-input>
+      </ion-item>
+      <ion-item class="item-nopadding">
+        <ion-label floating>Barcode</ion-label>
+        <ion-input [(ngModel)]="pricevariant.barcode" name="barcode" type="text"></ion-input>
+      </ion-item>
+      <ion-input [(ngModel)]="pricevariant.image" name="image" type="hidden" value="noImage"></ion-input>
+      <ion-input [(ngModel)]="pricevariant.item_id" name="item_id" type="hidden" value="1"></ion-input>
+      <ion-input [(ngModel)]="pricevariant.id_real" name="id_real" type="hidden"></ion-input>
+      <div class="no-border"></div>
+    </ion-card-content>
+  </ion-card> 
 
 </ion-content>

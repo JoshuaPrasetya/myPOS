@@ -1,0 +1,26 @@
+<ion-header>
+
+  <ion-navbar color="primary">
+      <ion-buttons left>
+          <button ion-button icon-only (click)="toRoot()">
+            <ion-icon name="arrow-round-back"></ion-icon>
+          </button>
+        </ion-buttons>
+    <ion-title>Transaction successful</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content>
+  <h1>Total: {{total | number}}</h1>
+  <h1>Cash: {{cash | number}}</h1><br>
+  <h1>Change: {{change | number}}</h1>
+
+  <div class="bottom-info" >
+    <button ion-button large full icon-end (click)="toRoot()">
+      New sale
+      <ion-icon name="checkmark-circle"></ion-icon>
+    </button>
+  </div>
+</ion-content>

@@ -1,6 +1,10 @@
 page-items {
+    .itemHighlight{
+        color: map-get($colors, primary);
+    }
+    .item-nopadding{
+        padding: 0px !important;
+        margin-bottom: -2px !important;   
+    }
 
-}
-.itemHighlight{
-    color: map-get($colors, primary);
 }

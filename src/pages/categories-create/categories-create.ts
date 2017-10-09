@@ -14,6 +14,7 @@ export class CategoriesCreatePage {
   category = { id: null, name: null };
   details = { count_items: 0, total_items: 0 };
   justCreate = false;
+  lastItemId: any;
 
   constructor(private databaseprovider: DatabaseProvider, public loadingCtrl: LoadingController, public navCtrl: NavController, public navParams: NavParams, public toastCtrl: ToastController, public restapiServiceProvider: RestapiServiceProvider) {
     if (this.retriveData = navParams.get('idCategory')) {
@@ -23,6 +24,13 @@ export class CategoriesCreatePage {
       this.getCategories();
     }
     this.justCreate = navParams.get('justCreate');
+  }
+
+  ionViewWillEnter() {
+    this.getCategories(this.retriveData);
+    this.databaseprovider.getLastItemId().then(data => {
+      this.lastItemId = data;
+    })
   }
 
   getCategories(id = null) {
@@ -43,25 +51,33 @@ export class CategoriesCreatePage {
 
   saveCategory(idCategory = null) {
     if (idCategory == null) {
-      console.log(JSON.stringify(this.category));
-      this.restapiServiceProvider.postData('categories', this.category).then((result) => {
-        if(this.justCreate == true){ // jika proses tambah data = true, maka update item category id = result
-          this.databaseprovider.updateCategoryItemsModify(result['id']);
-        }
-        
-        let confirm = this.toastCtrl.create({
-          message: 'Category was added successfully',
-          duration: 2000
-        });
-        confirm.present();
-        
-        this.navCtrl.pop();
+      //console.log(JSON.stringify(this.category));
+      this.restapiServiceProvider.postData('categories', this.category).then(result => {
+        //var res = JSON.parse(result);
+        if (this.justCreate) { // jika proses tambah data = true, maka update item category id = result
+          this.databaseprovider.updateCategoryItems(parseInt(result['id']), this.lastItemId);
+          let confirm = this.toastCtrl.create({
+            message: 'Category ' + result['name'] + ' was added successfully',
+            duration: 2000
+          });
+          confirm.present();
 
+          this.navCtrl.pop();
+        } else {
+
+          let confirm = this.toastCtrl.create({
+            message: 'Category was added successfully',
+            duration: 2000
+          });
+          confirm.present();
+
+          this.navCtrl.pop();
+        }
       }, (err) => {
         console.log(err);
       });
     } else {
-      this.restapiServiceProvider.putData('categories/'+idCategory, this.category).then((result) => {
+      this.restapiServiceProvider.putData('categories/' + idCategory, this.category).then((result) => {
         console.log(result);
         let confirm = this.toastCtrl.create({
           message: 'Category was updated successfully',

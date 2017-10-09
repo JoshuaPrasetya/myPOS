@@ -1,3 +1,17 @@
 page-discount-create {
-
+    .card-header-border {
+        border-bottom: 2px solid #e2e2e2 !important;
+        margin-bottom: 10px
+    }
+    
+    .item-nopadding{
+        padding: 0px !important;
+        margin-bottom: 5px;
+    }
+    
+    .no-border{
+        border-width: 0px !important;
+        margin-bottom: 20px;
+    }
+    
 }

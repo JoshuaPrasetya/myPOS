@@ -13,7 +13,10 @@ export class RestapiServiceProvider {
 
   data : any;
   //apiUrl = 'http://localhost/myPOS-API/public/api/v1';
-  //apiUrl = 'http://192.168.1.65/myPOS-API/public/api/v1';
+  //apiUrl = 'http://192.168.43.161:8000/api/v1';
+  //apiUrl = 'http://192.168.1.68:8000/api/v1';
+  //apiUrl = 'http://192.168.1.67:8000/api/v1';
+  //apiUrl = 'http://10.11.12.171:8000/api/v1';
   //apiUrl = 'http://loyalti.kelelawar.com/public/api/v1';
   apiUrl = 'http://gema-dev.com/myPOS-API/public/api/v1';
   
@@ -52,8 +55,10 @@ export class RestapiServiceProvider {
   postData(namespace, data) {
     return new Promise((resolve, reject) => {
       this.http.post(this.apiUrl+'/'+namespace, data)
-        .subscribe(res => {
-          resolve(res);
+        .map(res=> res.json())
+        .subscribe(data => {
+          this.data = data.data
+          resolve(this.data);
         }, (err) => {
           reject(err);
         });

@@ -1,18 +1,46 @@
-<!--
-  Generated template for the EditTicketPage page.
-
-  See http://ionicframework.com/docs/components/#navigation for more info on
-  Ionic pages and navigation.
--->
 <ion-header>
+  <ion-navbar color="primary">
+    <button menuToggle *ngIf="!selectedItem">
+            <ion-icon name="menu"></ion-icon>
+          </button>
+    <ion-title>
+      <span>{{item.name}}</span>
 
-  <ion-navbar>
-    <ion-title>edit-ticket</ion-title>
+    </ion-title>
+
+    <ion-buttons end>
+      <button clear ion-button>
+        {{item.total | number}}
+      </button>
+      <button class="blue-background" ion-button icon-end (click)="saveItemsOnTicket(item.id)">
+        OK
+        <ion-icon name="checkmark-circle"></ion-icon>
+      </button>
+    </ion-buttons>
   </ion-navbar>
-
 </ion-header>
 
 
 <ion-content padding>
+  Ticket ID: {{ticket_id}} <br> ConsoleLog = {{consoleLog}}
+  <ion-item>
+    <ion-label stacked>Quantity </ion-label>
+    <ion-input min="0" type="number" [(ngModel)]="item.qty" name="qty" required>
+    </ion-input>
+    
+
+  </ion-item>
+ <button col-5 ion-button (click)="decrement()"><ion-icon name="remove-circle"></ion-icon></button>
+ <button col-5 ion-button (click)="increment()"><ion-icon name="add-circle"></ion-icon></button>
+      
+      
+
+
+  <br>
+  <h2>Discounts</h2>
+  <ion-item *ngFor="let dis of discounts">
+    <ion-label> {{dis.name}} ({{dis.value}}<span *ngIf="dis.type == 'percent'">%</span>)</ion-label>
+    <ion-toggle checked="false"></ion-toggle>
+  </ion-item>
 
 </ion-content>
